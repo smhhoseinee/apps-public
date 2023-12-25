@@ -1,7 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
 metadata:
-  name: cross-namespace
+  name: argocd
   namespace: argocd
   annotations:
     "io.cilium/lb-ipam-ips": "192.168.1.134"
