@@ -1,0 +1,21 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: cross-namespace
+  namespace: argocd
+  annotations:
+    "io.cilium/lb-ipam-ips": "192.168.1.134"
+    metallb.universe.tf/loadBalancerIPs: "192.168.1.239"
+spec:
+  parentRefs:
+  - name: private-gateway
+    namespace: infra-ns
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - kind: Service
+      name: argocd-server
+      port: 80

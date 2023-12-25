@@ -1,0 +1,16 @@
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: GatewayClass
+metadata:
+  name: private
+  namespace: infra
+spec:
+  controllerName: io.cilium/gateway-controller
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: GatewayClass
+metadata:
+  name: public
+  namespace: default
+spec:
+  controllerName: io.cilium/gateway-controller

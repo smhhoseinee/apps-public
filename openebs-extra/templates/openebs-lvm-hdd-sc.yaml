@@ -1,0 +1,13 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-hdd
+  labels:
+    argocd.argoproj.io/instance: openebs-extra
+parameters:
+  storage: lvm
+  volgroup: lvmvg_hdd
+provisioner: local.csi.openebs.io
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true

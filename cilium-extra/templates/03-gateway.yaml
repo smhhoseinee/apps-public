@@ -1,0 +1,37 @@
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: private-gateway
+  namespace: infra
+  labels:
+    "io.cilium/lb-ipam-ips": "172.16.113.101"
+spec:
+  gatewayClassName: private
+  addresses:
+  - type: IPAddress
+    value: 172.16.113.101
+  listeners:
+  - name: private-http
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            private-gateway-access: "true"
+  - name: private-skyroom-https
+    protocol: HTTPS
+    port: 443
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            private-gateway-access: "true"
+    hostname: "*.skyroom.online"
+    tls:
+      certificateRefs:
+      - kind: Secret
+        name: tls-skyroom
