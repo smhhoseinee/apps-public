@@ -30,7 +30,7 @@ spec:
               cpu: 3
     volumeClaimTemplates:
     - metadata:
-        name: elasticsearch-ssd-data
+        name: local-ssd
       spec:
         accessModes:
         - ReadWriteOnce
@@ -54,7 +54,7 @@ spec:
               cpu: 2
     volumeClaimTemplates:
     - metadata:
-        name: elasticsearch-ssd-data
+        name: local-ssd
       spec:
         accessModes:
         - ReadWriteOnce
@@ -95,7 +95,7 @@ spec:
                   - elastic
     volumeClaimTemplates:
     - metadata:
-        name: elasticsearch-ssd-data
+        name: local-ssd
       spec:
         accessModes:
         - ReadWriteOnce
@@ -142,5 +142,5 @@ spec:
         - ReadWriteOnce
         resources:
           requests:
-            storage: 9Ti
+            storage: 8Ti
         storageClassName: local-hdd
