@@ -10,11 +10,13 @@ spec:
   parentRefs:
   - name: private-gateway
     namespace: infra-ns
+  hostnames:
+  - "d.skyroom.online"
   rules:
   - matches:
     - path:
         type: PathPrefix
-        value: /
+        value: /1111
     backendRefs:
     - kind: Service
       name: argocd-server
