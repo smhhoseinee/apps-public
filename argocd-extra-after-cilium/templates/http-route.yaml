@@ -16,7 +16,7 @@ spec:
   - matches:
     - path:
         type: PathPrefix
-        value: /1111
+        value: /
     backendRefs:
     - kind: Service
       name: argocd-server
