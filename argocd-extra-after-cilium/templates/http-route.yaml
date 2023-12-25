@@ -9,7 +9,7 @@ metadata:
 spec:
   parentRefs:
   - name: private-gateway
-    namespace: infra-ns
+    namespace: infra
   hostnames:
   - "d.skyroom.online"
   rules:
