@@ -1,0 +1,34 @@
+apiVersion: beat.k8s.elastic.co/v1beta1
+kind: Beat
+metadata:
+  name: heartbeat
+spec:
+  type: heartbeat
+  version: {{ .Values.version }}
+  elasticsearchRef:
+    name: {{ .Values.clustername }}
+  config:
+    heartbeat.monitors:
+    - type: http
+      schedule: '@every 5s'
+      hosts:
+        - "https://d.skyroom.online"
+    - type: http
+      ssl:
+        verification_mode: none
+      schedule: '@every 5s'
+      check.response.status: [200,403]
+      hosts:
+        - "https://skyroom.online"
+  deployment:
+    replicas: 1
+    podTemplate:
+      spec:
+        containers:
+          - name: heartbeat
+            image: docker.elastic.co/beats/heartbeat:{{ .Values.version }}
+            securityContext:
+              runAsUser: 0
+              privileged: true
+              capabilities:
+                add: [ NET_RAW ]
