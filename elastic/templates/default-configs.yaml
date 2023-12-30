@@ -1,0 +1,47 @@
+apiVersion: stackconfigpolicy.k8s.elastic.co/v1alpha1
+kind: StackConfigPolicy
+metadata:
+  name: default-stack-config-policy
+spec:
+  elasticsearch:
+    indexLifecyclePolicies:
+      default-ilm:
+        phases:
+          delete:
+            actions:
+              delete: {}
+            min_age: 30d
+          warm:
+            actions:
+              forcemerge:
+                max_num_segments: 1
+            min_age: 180d
+          hot:
+            actions:
+              forcemerge:
+                max_num_segments: 1
+            min_age: 30d
+    indexTemplates:
+      componentTemplates:
+        test-component-template:
+          template:
+            mappings:
+              properties:
+                '@timestamp':
+                  type: date
+        test-runtime-component-template-test:
+          template:
+            mappings:
+              runtime:
+                day_of_week:
+                  type: keyword
+      composableIndexTemplates:
+        default-template:
+          index_patterns:
+          - "*"
+          priority: 1
+          template:
+            settings:
+              number_of_shards: 5
+              number_of_replicas: 3
+          version: 1
