@@ -7,3 +7,5 @@ spec:
   count: 3
   elasticsearchRef:
     name: {{ .Values.clustername }}
+  kibanaRef:
+    name: kibana
