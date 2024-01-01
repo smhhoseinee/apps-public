@@ -20,7 +20,7 @@ spec:
             actions:
               forcemerge:
                 max_num_segments: 1
-            min_age: 30d
+            min_age: 15d
     indexTemplates:
       componentTemplates:
         test-component-template:
