@@ -4,7 +4,7 @@ metadata:
   name: kibana
 spec:
   version: {{ .Values.version }}
-  image: docker.elastic.co/kibana/kibanakibana:{{ .Values.version }}
+  image: docker.elastic.co/kibana/kibana:{{ .Values.version }}
   http:
     service:
       spec:
