@@ -120,12 +120,10 @@ spec:
         affinity:
           podAntiAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    elasticsearch.k8s.elastic.co/cluster-name: {{ .Values.clustername }}
-                topologyKey: kubernetes.io/hostname
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  elasticsearch.k8s.elastic.co/cluster-name: {{ .Values.clustername }}
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
