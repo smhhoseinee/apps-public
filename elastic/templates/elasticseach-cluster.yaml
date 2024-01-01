@@ -30,7 +30,7 @@ spec:
               cpu: 3
     volumeClaimTemplates:
     - metadata:
-        name: local-ssd
+        name: elasticsearch-data
       spec:
         accessModes:
         - ReadWriteOnce
@@ -54,7 +54,7 @@ spec:
               cpu: 2
     volumeClaimTemplates:
     - metadata:
-        name: local-ssd
+        name: elasticsearch-data
       spec:
         accessModes:
         - ReadWriteOnce
@@ -95,7 +95,7 @@ spec:
                   - elastic
     volumeClaimTemplates:
     - metadata:
-        name: elasticsearch-data'
+        name: elasticsearch-data
       spec:
         accessModes:
         - ReadWriteOnce
