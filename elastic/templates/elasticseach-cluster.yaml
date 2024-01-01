@@ -95,7 +95,7 @@ spec:
                   - elastic
     volumeClaimTemplates:
     - metadata:
-        name: local-ssd
+        name: elasticsearch-data'
       spec:
         accessModes:
         - ReadWriteOnce
@@ -136,7 +136,7 @@ spec:
                   - elastic
     volumeClaimTemplates:
     - metadata:
-        name: elasticsearch-lff-data
+        name: elasticsearch-data
       spec:
         accessModes:
         - ReadWriteOnce
