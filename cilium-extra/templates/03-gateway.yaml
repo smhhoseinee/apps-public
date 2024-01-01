@@ -5,12 +5,12 @@ metadata:
   name: private-gateway
   namespace: infra
   labels:
-    "io.cilium/lb-ipam-ips": "172.16.113.101"
+    "io.cilium/lb-ipam-ips": "172.16.133.131"
 spec:
   gatewayClassName: private
   addresses:
   - type: IPAddress
-    value: 172.16.113.101
+    value: 172.16.133.131
   listeners:
   - name: private-http
     protocol: HTTP
