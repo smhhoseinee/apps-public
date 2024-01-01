@@ -4,6 +4,6 @@ metadata:
   name: apmserver
 spec:
   version: {{ .Values.version }}
-  count: 1
+  count: 3
   elasticsearchRef:
     name: {{ .Values.clustername }}
