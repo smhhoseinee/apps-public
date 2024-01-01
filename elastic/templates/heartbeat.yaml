@@ -12,7 +12,7 @@ spec:
     - type: http
       schedule: '@every 5s'
       hosts:
-        - "https://d.skyroom.online"
+        - "https://delivery.skyroom.online"
     - type: http
       ssl:
         verification_mode: none
