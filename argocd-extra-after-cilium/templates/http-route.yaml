@@ -4,14 +4,14 @@ metadata:
   name: argocd
   namespace: argocd
   annotations:
-    "io.cilium/lb-ipam-ips": "192.168.1.134"
-    metallb.universe.tf/loadBalancerIPs: "192.168.1.239"
+    "io.cilium/lb-ipam-ips": "172.16.133.20"
+    metallb.universe.tf/loadBalancerIPs: "172.16.133.20"
 spec:
   parentRefs:
   - name: private-gateway
     namespace: infra
   hostnames:
-  - "d.skyroom.online"
+  - "delivery.skyroom.online"
   rules:
   - matches:
     - path:
