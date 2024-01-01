@@ -78,13 +78,11 @@ spec:
               cpu: 3
         affinity:
           podAntiAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 100
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    elasticsearch.k8s.elastic.co/cluster-name: {{ .Values.clustername }}
-                topologyKey: kubernetes.io/hostname
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  elasticsearch.k8s.elastic.co/statefulset-name: "{{ .Values.clustername }}-es-hot"
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
@@ -123,7 +121,7 @@ spec:
             - topologyKey: kubernetes.io/hostname
               labelSelector:
                 matchLabels:
-                  elasticsearch.k8s.elastic.co/cluster-name: {{ .Values.clustername }}
+                  elasticsearch.k8s.elastic.co/statefulset-name: "{{ .Values.clustername }}-es-warm"
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
               nodeSelectorTerms:
