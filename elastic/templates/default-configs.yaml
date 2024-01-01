@@ -10,7 +10,7 @@ spec:
           delete:
             actions:
               delete: {}
-            min_age: 30d
+            min_age: 200d
           warm:
             actions:
               forcemerge:
