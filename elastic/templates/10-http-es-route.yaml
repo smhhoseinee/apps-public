@@ -17,5 +17,5 @@ spec:
         value: /
     backendRefs:
     - kind: Service
-      name: kibana-kb-http
-      port: 5601
+      name: logcluster-es-http
+      port: 9200

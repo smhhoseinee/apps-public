@@ -17,5 +17,5 @@ spec:
         value: /
     backendRefs:
     - kind: Service
-      name: logcluster-es-http
-      port: 9200
+      name: apmserver-apm-http
+      port: 8200
