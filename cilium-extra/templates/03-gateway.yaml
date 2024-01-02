@@ -5,23 +5,14 @@ metadata:
   name: private-gateway
   namespace: infra
   labels:
-    "io.cilium/lb-ipam-ips": "172.16.133.131"
+    "io.cilium/lb-ipam-ips": "172.16.133.128"
 spec:
   gatewayClassName: private
   addresses:
   - type: IPAddress
-    value: 172.16.133.131
+    value: 172.16.133.128
   listeners:
-  - name: private-http
-    protocol: HTTP
-    port: 80
-    allowedRoutes:
-      namespaces:
-        from: Selector
-        selector:
-          matchLabels:
-            private-gateway-access: "true"
-  - name: private-skyroom-https
+  - name: private-rovzane-https
     protocol: HTTPS
     port: 443
     allowedRoutes:
@@ -30,8 +21,8 @@ spec:
         selector:
           matchLabels:
             private-gateway-access: "true"
-    hostname: "*.skyroom.online"
+    hostname: "*.rovzane.com"
     tls:
       certificateRefs:
       - kind: Secret
-        name: tls-skyroom
+        name: tls-rovzane
