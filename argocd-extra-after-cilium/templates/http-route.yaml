@@ -11,7 +11,7 @@ spec:
   - name: private-gateway
     namespace: infra
   hostnames:
-  - "delivery.skyroom.online"
+  - "delivery.rovzane.com"
   rules:
   - matches:
     - path:
