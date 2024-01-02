@@ -4,8 +4,9 @@ kind: Gateway
 metadata:
   name: private-gateway
   namespace: infra
-  labels:
+  annotations:
     "io.cilium/lb-ipam-ips": "172.16.133.128"
+    metallb.universe.tf/loadBalancerIPs: "172.16.133.128"
 spec:
   gatewayClassName: private
   addresses:
