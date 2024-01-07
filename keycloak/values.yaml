@@ -37,6 +37,9 @@ keycloak:
     enabled: false
 
   externalDatabase:
+    host: keycloak-postgresql-ha-pgpool
+    user: postgres
+    database: sky_keycloak
     existingSecret: keycloak-postgresql-auth
     existingSecretPasswordKey: password
 
@@ -74,7 +77,7 @@ postgresql-ha:
     serviceMonitor:
       # Need to deploy prometheus-operator first
       enabled: false
-  
+
   persistance:
     enabled: true
     size: 2Gi
