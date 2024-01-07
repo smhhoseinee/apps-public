@@ -38,6 +38,7 @@ keycloak:
 
   externalDatabase:
     existingSecret: keycloak-postgresql-auth
+    existingSecretPasswordKey: password
 
 postgresql-ha:
   global:
