@@ -1,0 +1,80 @@
+keycloak:
+  global:
+    storageClass: "local-ssd"
+
+  clusterDomain: "tools.k8s.rovzane.com"
+
+  image:
+    registry: registry.arico-b2b.com
+    repository: cache/bitnami/keycloak
+
+  auth:
+    existingSecret: keycloak-admin-auth
+
+  # Set ssl termination on ingress
+  proxy: edge
+
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 256Mi
+    limits:
+      cpu: 2000m
+      memory: 1024Mi
+
+  ingress:
+    enabled: false
+
+  httpRoute:
+    enabled: true
+    hostnames:
+    - sso.rovzane.com
+    parentRefs:
+    - name: private-gateway
+      namespace: infra
+
+  postgresql:
+    enabled: false
+
+  externalDatabase:
+    existingSecret: keycloak-postgresql-auth
+
+postgresql-ha:
+  global:
+    storageClass: "local-ssdraid"
+    postgresql:
+      existingSecret: keycloak-postgresql-auth
+    pgpool:
+      existingSecret: keycloak-postgresql-auth
+
+  clusterDomain: "tools.k8s.rovzane.com"
+
+  postgresql:
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 256Mi
+      limits:
+        cpu: 4000m
+        memory: 1024Mi
+
+  pgpool:
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 256Mi
+      limits:
+        cpu: 4000m
+        memory: 1024Mi
+
+  metrics:
+    enabled: true
+    serviceMonitor:
+      # Need to deploy prometheus-operator first
+      enabled: false
+  
+  persistance:
+    enabled: true
+    size: 2Gi
+
+
