@@ -8,6 +8,8 @@ keycloak:
     registry: registry.arico-b2b.com
     repository: cache/bitnami/keycloak
 
+  production: true
+
   auth:
     existingSecret: keycloak-admin-auth
 
