@@ -50,6 +50,7 @@ postgresql-ha:
   clusterDomain: "tools.k8s.rovzane.com"
 
   postgresql:
+    headlessWithNotReadyAddresses: true
     resources:
       requests:
         cpu: 1000m
