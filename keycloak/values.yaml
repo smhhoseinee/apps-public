@@ -2,7 +2,7 @@ keycloak:
   global:
     storageClass: "local-ssd"
 
-  clusterDomain: "tools.k8s.rovzane.com"
+  clusterDomain: "cluster.local"
 
   image:
     registry: registry.arico-b2b.com
@@ -47,7 +47,7 @@ postgresql-ha:
     pgpool:
       existingSecret: keycloak-postgresql-auth
 
-  clusterDomain: "tools.k8s.rovzane.com"
+  clusterDomain: "cluster.local"
 
   postgresql:
     headlessWithNotReadyAddresses: true
