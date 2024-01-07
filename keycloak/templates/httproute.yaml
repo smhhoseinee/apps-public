@@ -5,9 +5,9 @@ metadata:
   name: {{ .Release.Name }}-keycloak
 spec:
   parentRefs:
-  {{- toYaml .Values.keycloak.httpRoute.parentRefs | indent 4 }}
+  {{- toYaml .Values.keycloak.httpRoute.parentRefs | nindent 6 }}
   hostnames:
-  {{- toYaml .Values.keycloak.httpRoute.hostnames | indent 4 }}
+  {{- toYaml .Values.keycloak.httpRoute.hostnames | nindent 6 }}
   rules:
   - matches:
     - path:
