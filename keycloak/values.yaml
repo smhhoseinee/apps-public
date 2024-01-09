@@ -84,3 +84,4 @@ postgrescluster:
     config:
       global:
         pool_mode: transaction
+        IGNORE_STARTUP_PARAMETERS: search_path
