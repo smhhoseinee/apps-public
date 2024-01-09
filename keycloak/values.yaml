@@ -45,43 +45,36 @@ keycloak:
     existingSecret: keycloak-postgresql-auth
     existingSecretPasswordKey: password
 
-postgresql-ha:
-  global:
-    storageClass: "local-ssdraid"
-    postgresql:
-      existingSecret: keycloak-postgresql-auth
-    pgpool:
-      existingSecret: keycloak-postgresql-auth
-
-  clusterDomain: "cluster.local"
-
-  postgresql:
-    headlessWithNotReadyAddresses: true
+postgrescluster:
+  enabled: true
+  postgresVersion: 16
+  pgBouncerReplicas: 2
+  monitoring: true
+  instances:
+  - name: pgha1
+    replicas: 3
+    dataVolumeClaimSpec:
+      storageClassName: "local-ssdraid"
+      accessModes:
+      - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: 2Gi
     resources:
       requests:
+        memory: 1Gi
         cpu: 1000m
-        memory: 256Mi
       limits:
-        cpu: 4000m
-        memory: 1024Mi
-
-  pgpool:
-    resources:
-      requests:
-        cpu: 1000m
-        memory: 256Mi
-      limits:
-        cpu: 4000m
-        memory: 1024Mi
-
-  metrics:
-    enabled: true
-    serviceMonitor:
-      # Need to deploy prometheus-operator first
-      enabled: false
-
-  persistance:
-    enabled: true
-    size: 2Gi
-
+        memory: 2Gi
+        cpu: 2000m
+  patroni:
+    dynamicConfiguration:
+      synchronous_mode: true
+      postgresql:
+        parameters:
+          synchronous_commit: "on"
+  users:
+  - name: keycloak_admin
+    databases:
+    - sky_keycloak
 
