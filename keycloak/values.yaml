@@ -49,7 +49,7 @@ keycloak:
 postgrescluster:
   enabled: true
   postgresVersion: 16
-  pgBouncerReplicas: 2
+  pgBouncerReplicas: 1
   monitoring: true
   instances:
   - name: pgha1
