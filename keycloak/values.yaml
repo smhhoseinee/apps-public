@@ -39,10 +39,11 @@ keycloak:
     enabled: false
 
   externalDatabase:
-    host: keycloak-postgresql-ha-pgpool
-    user: postgres
-    database: sky_keycloak
-    existingSecret: keycloak-postgresql-auth
+    existingSecret: keycloak-pguser-keycloak-admin
+    existingSecretHostKey: pgbouncer-host
+    existingSecretPortKey: pgbouncer-port
+    existingSecretDatabaseKey: dbname
+    existingSecretUserKey: user
     existingSecretPasswordKey: password
 
 postgrescluster:
