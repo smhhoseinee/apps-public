@@ -78,4 +78,5 @@ postgrescluster:
   - name: keycloak-admin
     databases:
     - sky_keycloak
-
+  # TODO: Change backup storage to S3
+  backupsStorageClassName: "local-hdd"
