@@ -80,3 +80,7 @@ postgrescluster:
     - sky_keycloak
   # TODO: Change backup storage to S3
   backupsStorageClassName: "local-hdd"
+  pgBouncerConfig:
+    config:
+      global:
+        pool_mode: transaction
