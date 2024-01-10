@@ -4,4 +4,4 @@
 #  name: "blue-pool"
 # spec:
 #  cidrs:
-#  - cidr: "172.16.133.128/25"
+#  - cidr: "172.16.133.0/24"
