@@ -48,7 +48,7 @@ keycloak:
 
 postgrescluster:
   enabled: true
-  postgresVersion: 16
+  postgresVersion: 14
   pgBouncerReplicas: 1
   monitoring: true
   instances:
