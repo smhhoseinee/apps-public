@@ -40,8 +40,8 @@ keycloak:
 
   externalDatabase:
     existingSecret: keycloak-pguser-keycloak-admin
-    existingSecretHostKey: pgbouncer-host
-    existingSecretPortKey: pgbouncer-port
+    existingSecretHostKey: host
+    existingSecretPortKey: port
     existingSecretDatabaseKey: dbname
     existingSecretUserKey: user
     existingSecretPasswordKey: password
