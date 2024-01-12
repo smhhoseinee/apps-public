@@ -15,5 +15,5 @@ spec:
         value: /
     backendRefs:
     - kind: Service
-      name: {{ .Release.Name }}-headless
-      port: 8200
+      name: {{ .Release.Name }}
+      port: 80
