@@ -8,6 +8,13 @@ vaultwarden:
   iconBlacklistNonGlobalIps: false
   ingress:
     enabled: false
+  httpRoute:
+    enabled: true
+    hostnames:
+    - secrets.rovzane.com
+    parentRefs:
+    - name: private-gateway
+      namespace: infra
   database:
     type: postgresql
     existingSecret: vaultwarden-pguser-vaultwarden-admin
