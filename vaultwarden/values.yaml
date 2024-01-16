@@ -11,7 +11,7 @@ vaultwarden:
   database:
     type: postgresql
     existingSecret: vaultwarden-pguser-vaultwarden-admin
-    existingSecretkey: pgbouncer-jdbc-uri
+    existingSecretKey: pgbouncer-jdbc-uri
   data:
     name: vaultwarden-data
     size: 2Gi
