@@ -104,6 +104,20 @@ keycloak:
                 "manage": true
               }
             }
+          ],
+          "groups": [
+            {
+              "name": "Admins"
+            },
+            {
+              "name": "Devs"
+            },
+            {
+              "name": "SuperAdmins"
+            },
+            {
+              "name": "TestEngineers"
+            },
           ]
         }
       prd.json: |
@@ -161,6 +175,20 @@ keycloak:
                 "manage": true
               }
             }
+          ],
+          "groups": [
+            {
+              "name": "Admins"
+            },
+            {
+              "name": "Devs"
+            },
+            {
+              "name": "SuperAdmins"
+            },
+            {
+              "name": "TestEngineers"
+            },
           ]
         }
 
