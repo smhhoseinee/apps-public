@@ -1,0 +1,80 @@
+vaultwarden:
+  domain: https://secrets.rovzane.com
+  adminToken:
+    value: $argon2id$v=19$m=65540,t=3,p=4$Y211RVlZMkVlS1A0ZmhIb2UzRzV3RWo5VE5UMnNFWUFUSE1aaFJ3eWorMD0$3OEbYbNd8Ozh9+bMfLRQ1u4QLla2Y9pvsQVjFNxWo2k
+  signupsAllowed: false
+  signupsVerify: false
+  invitationOrgName: Skyroom
+  iconBlacklistNonGlobalIps: false
+  ingress:
+    enabled: false
+  database:
+    type: postgresql
+    existingSecret: vaultwarden-pguser-vaultwarden-admin
+    existingSecretkey: pgbouncer-jdbc-uri
+  data:
+    name: vaultwarden-data
+    size: 2Gi
+    class: local-ssd
+    path: /data
+  resources:
+  limits:
+    cpu: 500m
+    memory: 1Gi
+  requests:
+    cpu: 50m
+    memory: 256Mi
+  smtp:
+    existingSecret: vaultwarden-smtp-auth
+    host: ""
+    port: 465
+    security: force_tls
+    from: ""
+    username:
+      existingSecretKey: username
+    password:
+      existingSecretKey: password
+  pushNotifications:
+    installationId: ""
+    installationKey: ""
+
+
+postgrescluster:
+  enabled: true
+  postgresVersion: 14
+  pgBouncerReplicas: 1
+  monitoring: true
+  instances:
+  - name: pgha1
+    replicas: 3
+    dataVolumeClaimSpec:
+      storageClassName: "local-ssdraid"
+      accessModes:
+      - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: 1Gi
+    resources:
+      requests:
+        memory: 1Gi
+        cpu: 1000m
+      limits:
+        memory: 2Gi
+        cpu: 2000m
+  patroni:
+    dynamicConfiguration:
+      synchronous_mode: true
+      postgresql:
+        parameters:
+          synchronous_commit: "on"
+  users:
+  - name: vaultwarden-admin
+    databases:
+    - sky_vault
+  # TODO: Change backup storage to S3
+  backupsStorageClassName: "local-hdd"
+  pgBouncerConfig:
+    config:
+      global:
+        pool_mode: transaction
+        ignore_startup_parameters: search_path,extra_float_digits

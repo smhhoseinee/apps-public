@@ -1,0 +1,13 @@
+apiVersion: v2
+name: vaultwarden
+description: Vaultwarden
+version: 0.1.0
+type: application
+dependencies:
+  - name: vaultwarden
+    version: 0.17.x
+    repository: https://guerzon.github.io/vaultwarden
+  - name: postgrescluster
+    version: 5.x.x
+    repository: oci://registry.arico-b2b.com/neorcloud
+    condition: postgrescluster.enabled
