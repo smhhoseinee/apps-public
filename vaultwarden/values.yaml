@@ -41,9 +41,9 @@ vaultwarden:
       existingSecretKey: username
     password:
       existingSecretKey: password
-  pushNotifications:
-    installationId: ""
-    installationKey: ""
+  # pushNotifications:
+  #   installationId: ""
+  #   installationKey: ""
 
 
 postgrescluster:
