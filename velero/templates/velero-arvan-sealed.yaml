@@ -1,0 +1,16 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: velero-arvan-secret
+  namespace: velero
+spec:
+  encryptedData:
+    cloud: AgBro8O1QCBlm2z1VZsaNg3RgqEo35lQ4Dh17TDf/ObP+zfoyLS+TRRIkwyBzL35KfYWhyu9w7PDni15ECkkgfTy9kWSnqOXz+xXwH4vBvCvJ3jk4jLEYYbyKBpRCJTot+uNSuW+y5T1OaDkfBwIZ1+ukCNvdg3NgN6uQ3q7f8jqWAOZnbyrrHaUBc+QDAg4Ugiz1JmOa8qeuZKWPMKX4zla+xkBLTyxuYGVWphu29k91x9QPsTsKpd1kSESHmqI8YUHMg/9PlIfVlHZ2/FgUdboU3M1hRxzKC8/gWcrew0eFKj0Jvy+W+BJ2MJphUy/ikdAczUfsGgn6D4L0sZ0ZFSWXEQrqBbUi5HcL8m4zluixy7acKKnbFz9um4knldMcy1phkRGiSYq6MPdGxFaAvsIkl4bRa3IZU795CMttlbs21jF7KbvZ1wNBI/GxVTcfQPEDa6N+lU//8ym8kqpmY2Po4Nbcj4fTo7BMVhOEPKH3NLmHmybAt7hLTcK8dFCHH5CorUvn5jsVDVUm7cQpAoxVVU585MybATNy5SaXNoPi1v6f8qnR8lxBbYMA1322/RglG8T+bxDTbg5nMTOvrDnObKdWdn4BMY/rPFlufknXtM0o+woA1m9rNei3Ylrft9TaW7LD0S+lsXHSo08J3G723MYiDx+0fBy5WYY6zNw4fBLladSMO5LJAwXqGMdnWN4+G4/T5aTekZKc/pWGWa1egZSe9yzl+Sin0NXjvzJBdEgNjJPLKSTR5YBRi4PtbRQLHrGAvPP1Gu9unWrAGxQi54cM39cedX3k0/wnsPIixNhWOmKUxciqgc+mTM2GZ4AgLmxUaFZKeVEg5NzUN4ZXikh2sBQxuorIdOBVOf7fRDtAnRWHkDe19Yn7tHB3SwzPTN5JhcDs/VrqmY=
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: velero-arvan-secret
+      namespace: velero
+    type: Opaque
