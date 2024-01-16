@@ -21,6 +21,7 @@ spec:
 
   source:
     targetRevision: {{ .Values.spec.source.targetRevision }}
+    RepoUrl: {{ .Values.spec.source.RepoUrl }}
     chart: {{ .Values.spec.source.chart }}
     helm:
       values: |-
