@@ -9,7 +9,8 @@ spec:
   - name: private-gateway
     namespace: infra
   hostnames:
-  - "apm.rovzane.com"
+  - "apm.rovzane.com
+  - "apm2.rovzane.com"
   rules:
   - matches:
     - path:
