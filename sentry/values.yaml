@@ -44,8 +44,10 @@ sentry:
   postgresql:
     enabled: false
   externalPostgresql:
-    host: ${cluster_name}-rw
+    host: &cluster_name-rw
     port: 5432
     username: sentry
     password: QIWmLIa36NdGIiBaN8u1
     database: sentry
+  # nginx:
+  #   enabled: false
