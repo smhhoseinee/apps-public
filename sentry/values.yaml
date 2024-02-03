@@ -1,0 +1,51 @@
+postgres_db:
+  instances: 3
+
+  superuser_secret: superuser-secret
+  db_user_secret: sentry-skymng-db-user-secret
+  db_user_name: sentry-skymng
+  db_name: sentry-db
+  cluster_name: &cluster_name sentry
+
+  storage:
+    storage_class: local-ssd
+    storage_size: 40Gi
+    wal_storage_size: 4Gi
+
+  image:
+    imageName: repo.rovzane.com/ghcr/cloudnative-pg/postgresql
+    tag: 16.1
+
+  s3:
+    destinationPath: s3://skyroom-sentry/sentry-pg 
+    endpointURL: https://s3.ir-thr-at1.arvanstorage.ir
+    secretName:  sentry-pd-s3-backup
+    accessKeyId: ACCESS_KEY
+    secretAccessKey: SECRET_KEY
+
+sentry:
+  user:
+    create: true
+    email: m.barazandeh110@gmail.com
+    password: 89WPXq7u7vif
+  ingress:
+    enabled: false
+    regexPathStyle: nginx
+    hostname: sentry.rovzane.com
+  sentry:
+    singleOrganization: false
+    worker:
+      replicas: 3
+  service:
+    name: sentry
+    type: ClusterIP
+    externalPort: 9000
+    annotations: {}
+  postgresql:
+    enabled: false
+  externalPostgresql:
+    host: ${cluster_name}-rw
+    port: 5432
+    username: sentry
+    password: QIWmLIa36NdGIiBaN8u1
+    database: sentry

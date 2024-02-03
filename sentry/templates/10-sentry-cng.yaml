@@ -1,0 +1,69 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.postgres_db.cluster_name }}
+  namespace: {{ .Values.postgres_db.namespace }}
+spec:
+  instances: {{ .Values.postgres_db.instances }}
+  imageName: "{{ .Values.postgres_db.image.imageName }}:{{ .Values.postgres_db.image.tag }}"
+  startDelay: 150
+  stopDelay: 150
+  smartShutdownTimeout: 75
+  primaryUpdateStrategy: unsupervised
+  superuserSecret:
+    name: {{ .Values.postgres_db.superuser_secret }}
+  postgresql:
+    parameters:
+      shared_buffers: 256MB
+      pg_stat_statements.max: '10000'
+      pg_stat_statements.track: all
+      auto_explain.log_min_duration: '10s'
+    pg_hba:
+      - host app app all password
+  bootstrap:
+    initdb:
+      database: {{ .Values.postgres_db.db_name }}
+      owner: {{ .Values.postgres_db.db_user_name }}
+      secret:
+        name: {{ .Values.postgres_db.db_user_secret }}
+  resources:
+    requests:
+      memory: "1024Mi"
+      cpu: 1
+    limits:
+      memory: "2048Mi"
+      cpu: 2
+  storage:
+    storageClass: {{ .Values.postgres_db.storage.storage_class }}
+    size: {{ .Values.postgres_db.storage.storage_size }}
+  walStorage:
+    storageClass: {{ .Values.postgres_db.storage.storage_class }}
+    size: {{ .Values.postgres_db.storage.wal_storage_size }}
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    barmanObjectStore:
+      wal:
+        compression: gzip
+        maxParallel: 8
+      data:
+        compression: gzip
+        immediateCheckpoint: false
+        jobs: 2
+      tags:
+        backupRetentionPolicy: "expire"
+      historyTags:
+        backupRetentionPolicy: "keep"
+      destinationPath: {{ .Values.postgres_db.s3.destinationPath }}
+      endpointURL: {{ .Values.postgres_db.s3.endpointURL }}
+      s3Credentials:
+        accessKeyId:
+          name: {{ .Values.postgres_db.s3.secretName }}
+          key: {{ .Values.postgres_db.s3.accessKeyId }}
+        secretAccessKey:
+          name: {{ .Values.postgres_db.s3.secretName }}
+          key: {{ .Values.postgres_db.s3.secretAccessKey }}
+    retentionPolicy: "10d"
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
