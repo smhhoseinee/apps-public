@@ -28,10 +28,10 @@ spec:
         name: {{ .Values.db_user_secret }}
   resources:
     requests:
-      memory: "1024Mi"
+      memory: "1Gi"
       cpu: 1
     limits:
-      memory: "2048Mi"
+      memory: "2Gi"
       cpu: 2
   storage:
     storageClass: {{ .Values.storage.storage_class }}
