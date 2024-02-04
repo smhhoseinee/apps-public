@@ -3,7 +3,7 @@ postgres_db:
 
   superuser_secret: superuser-secret
   db_user_secret: sentry-skymng-db-user-secret
-  db_user_name: sentry-skymng
+  db_user_name: &db_user_name sentry-skymng
   db_name: sentry-db
   cluster_name: &cluster_name sentry
 
@@ -46,7 +46,7 @@ sentry:
   externalPostgresql:
     host: sentry-db-rw
     port: 5432
-    username: sentry
+    username: *db_user_name
     password: QIWmLIa36NdGIiBaN8u1
     database: sentry
   # nginx:
