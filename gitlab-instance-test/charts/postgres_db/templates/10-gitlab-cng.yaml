@@ -48,7 +48,6 @@ spec:
         maxParallel: 8
       data:
         compression: gzip
-        immediateCheckpoint: false
         jobs: 2
       tags:
         backupRetentionPolicy: "expire"
