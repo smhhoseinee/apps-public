@@ -5,20 +5,20 @@ metadata:
 spec:
   instances: {{ .Values.postgres_db.instances }}
   imageName: "{{ .Values.postgres_db.image.imageName }}:{{ .Values.postgres_db.image.tag }}"
-  startDelay: 150
-  stopDelay: 150
-  smartShutdownTimeout: 75
+  # startDelay: 150
+  # stopDelay: 150
+  # smartShutdownTimeout: 75
   primaryUpdateStrategy: unsupervised
   superuserSecret:
     name: {{ .Values.postgres_db.superuser_secret }}
-  postgresql:
-    parameters:
-      shared_buffers: 256MB
-      pg_stat_statements.max: '10000'
-      pg_stat_statements.track: all
-      auto_explain.log_min_duration: '10s'
-    pg_hba:
-      - host app app all password
+  # postgresql:
+  #   parameters:
+  #     shared_buffers: 256MB
+  #     pg_stat_statements.max: '10000'
+  #     pg_stat_statements.track: all
+  #     auto_explain.log_min_duration: '10s'
+  #   pg_hba:
+  #     - host app app all password
   bootstrap:
     initdb:
       database: {{ .Values.postgres_db.db_name }}
