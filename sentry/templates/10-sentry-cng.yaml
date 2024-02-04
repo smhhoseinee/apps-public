@@ -17,8 +17,9 @@ spec:
   #     pg_stat_statements.max: '10000'
   #     pg_stat_statements.track: all
   #     auto_explain.log_min_duration: '10s'
-  #   pg_hba:
-  #     - host app app all password
+    pg_hba:
+      - "host all all 0.0.0.0/0 trust" # this line enabled logical replication with programmatic access
+      - "host all postgres 0.0.0.0/0 md5"
   bootstrap:
     initdb:
       database: {{ .Values.postgres_db.db_name }}
