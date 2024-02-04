@@ -5,18 +5,18 @@ metadata:
 spec:
   instances: {{ .Values.postgres_db.instances }}
   imageName: "{{ .Values.postgres_db.image.imageName }}:{{ .Values.postgres_db.image.tag }}"
-  # startDelay: 150
-  # stopDelay: 150
-  # smartShutdownTimeout: 75
+  startDelay: 150
+  stopDelay: 150
+  smartShutdownTimeout: 75
   primaryUpdateStrategy: unsupervised
-  # superuserSecret:
-    # name: {{ .Values.postgres_db.superuser_secret }}
+  superuserSecret:
+    name: {{ .Values.postgres_db.superuser_secret }}
   postgresql:
-  #   parameters:
-  #     shared_buffers: 256MB
-  #     pg_stat_statements.max: '10000'
-  #     pg_stat_statements.track: all
-  #     auto_explain.log_min_duration: '10s'
+    parameters:
+      shared_buffers: 256MB
+      pg_stat_statements.max: '10000'
+      pg_stat_statements.track: all
+      auto_explain.log_min_duration: '10s'
     pg_hba:
       - "host all all 0.0.0.0/0 trust" # this line enabled logical replication with programmatic access
       - "host all postgres 0.0.0.0/0 md5"
@@ -28,11 +28,11 @@ spec:
         name: {{ .Values.postgres_db.db_user_secret }}
   resources:
     requests:
-      memory: "1024Mi"
-      cpu: 1
+      memory: "1Gi"
+      cpu: '1'
     limits:
-      memory: "2048Mi"
-      cpu: 2
+      memory: "2Gi"
+      cpu: '2'
   logLevel: warning
   storage:
     storageClass: {{ .Values.postgres_db.storage.storage_class }}
@@ -49,7 +49,6 @@ spec:
         maxParallel: 8
       data:
         compression: gzip
-        immediateCheckpoint: false
         jobs: 2
       tags:
         backupRetentionPolicy: "expire"
