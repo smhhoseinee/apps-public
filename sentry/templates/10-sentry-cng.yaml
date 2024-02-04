@@ -32,6 +32,7 @@ spec:
     limits:
       memory: "2048Mi"
       cpu: 2
+  logLevel: warning
   storage:
     storageClass: {{ .Values.postgres_db.storage.storage_class }}
     size: {{ .Values.postgres_db.storage.storage_size }}
