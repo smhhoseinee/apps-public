@@ -2,7 +2,6 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: {{ .Values.postgres_db.cluster_name }}
-  namespace: {{ .Values.postgres_db.namespace }}
 spec:
   instances: {{ .Values.postgres_db.instances }}
   imageName: "{{ .Values.postgres_db.image.imageName }}:{{ .Values.postgres_db.image.tag }}"
