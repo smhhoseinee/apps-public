@@ -1,7 +1,6 @@
 postgres_db:
   instances: 3
-
-  superuser_secret: superuser-secret
+  superuser_secret: superuser-secret2
   db_user_secret: sentry-skymng-db-user-secret
   db_user_name: &db_user_name sentry-skymng
   db_name: &db_name sentry-db

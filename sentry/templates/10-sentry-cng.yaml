@@ -9,8 +9,8 @@ spec:
   # stopDelay: 150
   # smartShutdownTimeout: 75
   primaryUpdateStrategy: unsupervised
-  superuserSecret:
-    name: {{ .Values.postgres_db.superuser_secret }}
+  # superuserSecret:
+  #   name: {{ .Values.postgres_db.superuser_secret }}
   # postgresql:
   #   parameters:
   #     shared_buffers: 256MB
