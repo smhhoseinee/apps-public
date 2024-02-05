@@ -37,6 +37,9 @@ sentry:
   ingress:
     enabled: false
     regexPathStyle: nginx
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/use-regex: "true"
     hostname: sentry.rovzane.com
   sentry:
     singleOrganization: false
@@ -45,7 +48,7 @@ sentry:
   service:
     name: sentry
     type: ClusterIP
-    externalPort: 9000
+    externalPort: 80
     annotations: {}
   postgresql:
     enabled: false
