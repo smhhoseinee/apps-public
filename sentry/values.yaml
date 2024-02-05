@@ -27,13 +27,13 @@ sentry:
     create: true
     email: m.barazandeh110@gmail.com
     password: 89WPXq7u7vif
-  # images:
-  #   snuba:
-  #     repository: repo.rovzane.com/dockerhub/getsentry/snuba
-  #   sentry:
-  #     repository: repo.rovzane.com/dockerhub/getsentry/sentry
-  #   relay:
-  #     repository: repo.rovzane.com/dockerhub/getsentry/relay
+  images:
+    snuba:
+      repository: repo.rovzane.com/dockerhub/getsentry/snuba
+    sentry:
+      repository: repo.rovzane.com/dockerhub/getsentry/sentry
+    relay:
+      repository: repo.rovzane.com/dockerhub/getsentry/relay
   ingress:
     enabled: false
     regexPathStyle: nginx
