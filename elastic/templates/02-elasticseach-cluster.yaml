@@ -9,6 +9,8 @@ spec:
     - secretName: elastic-user
     - secretName: develop-user
     - secretName: logs-user
+    roles:
+    - secretName: insert-logs
   image: docker.elastic.co/elasticsearch/elasticsearch:{{ .Values.version }}
   http:
     service:
