@@ -8,6 +8,7 @@ spec:
     fileRealm:
     - secretName: elastic-user
     - secretName: develop-user
+    - secretName: logs-user
   image: docker.elastic.co/elasticsearch/elasticsearch:{{ .Values.version }}
   http:
     service:
