@@ -1,0 +1,11 @@
+kind: Secret
+apiVersion: v1
+metadata:
+  name: insert-logs
+stringData:
+  roles.yml: |-
+    click_admins:
+      run_as: [ '*' ]
+      indices:
+      - names: [ 'skyromm-*', 'ds-skyroom-*' ]
+        privileges: [ 'create_doc', 'create_index' ]
