@@ -24,8 +24,8 @@ version: 0.1.0
 appVersion: "1.16.0"
 
 dependencies:
-  - name: pg_db
-    version: '*.*.*'
+  # - name: pg_db
+  #   version: '*.*.*'
   - name: sentry
     repository: "https://repo.rovzane.com/artifactory/sentry"
     version: 21.3.0

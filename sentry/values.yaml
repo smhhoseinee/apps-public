@@ -51,12 +51,14 @@ sentry:
     externalPort: 80
     annotations: {}
   postgresql:
-    enabled: false
-  externalPostgresql:
-    host: sentry-rw
-    port: 5432
-    username: *db_user_name
-    existingSecret: *db_user_secret
-    database: *db_name
+    enabled: true
+  # postgresql:
+  #   enabled: false
+  # externalPostgresql:
+  #   host: sentry-rw
+  #   port: 5432
+  #   username: *db_user_name
+  #   existingSecret: *db_user_secret
+  #   database: *db_name
   # nginx:
   #   enabled: false
