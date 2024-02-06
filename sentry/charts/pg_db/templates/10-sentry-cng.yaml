@@ -1,16 +1,16 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: {{ .Values.postgres_db.cluster_name }}
+  name: {{ .Values.cluster_name }}
 spec:
-  instances: {{ .Values.postgres_db.instances }}
-  imageName: "{{ .Values.postgres_db.image.imageName }}:{{ .Values.postgres_db.image.tag }}"
+  instances: {{ .Values.instances }}
+  imageName: "{{ .Values.image.imageName }}:{{ .Values.image.tag }}"
   startDelay: 150
   stopDelay: 150
   smartShutdownTimeout: 75
   primaryUpdateStrategy: unsupervised
   superuserSecret:
-    name: {{ .Values.postgres_db.superuser_secret }}
+    name: {{ .Values.superuser_secret }}
   postgresql:
     parameters:
       shared_buffers: 256MB
@@ -22,10 +22,10 @@ spec:
       - "host all postgres 0.0.0.0/0 md5"
   bootstrap:
     initdb:
-      database: {{ .Values.postgres_db.db_name }}
-      owner: {{ .Values.postgres_db.db_user_name }}
+      database: {{ .Values.db_name }}
+      owner: {{ .Values.db_user_name }}
       secret:
-        name: {{ .Values.postgres_db.db_user_secret }}
+        name: {{ .Values.db_user_secret }}
   resources:
     requests:
       memory: "1Gi"
@@ -35,11 +35,11 @@ spec:
       cpu: '2'
   logLevel: warning
   storage:
-    storageClass: {{ .Values.postgres_db.storage.storage_class }}
-    size: {{ .Values.postgres_db.storage.storage_size }}
+    storageClass: {{ .Values.storage.storage_class }}
+    size: {{ .Values.storage.storage_size }}
   walStorage:
-    storageClass: {{ .Values.postgres_db.storage.storage_class }}
-    size: {{ .Values.postgres_db.storage.wal_storage_size }}
+    storageClass: {{ .Values.storage.storage_class }}
+    size: {{ .Values.storage.wal_storage_size }}
   monitoring:
     enablePodMonitor: true
   backup:
@@ -54,15 +54,15 @@ spec:
         backupRetentionPolicy: "expire"
       historyTags:
         backupRetentionPolicy: "keep"
-      destinationPath: {{ .Values.postgres_db.s3.destinationPath }}
-      endpointURL: {{ .Values.postgres_db.s3.endpointURL }}
+      destinationPath: {{ .Values.s3.destinationPath }}
+      endpointURL: {{ .Values.s3.endpointURL }}
       s3Credentials:
         accessKeyId:
-          name: {{ .Values.postgres_db.s3.secretName }}
-          key: {{ .Values.postgres_db.s3.accessKeyId }}
+          name: {{ .Values.s3.secretName }}
+          key: {{ .Values.s3.accessKeyId }}
         secretAccessKey:
-          name: {{ .Values.postgres_db.s3.secretName }}
-          key: {{ .Values.postgres_db.s3.secretAccessKey }}
+          name: {{ .Values.s3.secretName }}
+          key: {{ .Values.s3.secretAccessKey }}
     retentionPolicy: "10d"
   nodeMaintenanceWindow:
     inProgress: false

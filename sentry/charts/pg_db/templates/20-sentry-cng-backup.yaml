@@ -1,9 +1,9 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: ScheduledBackup
 metadata:
-  name: "{{ .Values.postgres_db.cluster_name }}-backup"
+  name: "{{ .Values.cluster_name }}-backup"
 spec:
   schedule: "0 0 5 * *"
   backupOwnerReference: self
   cluster:
-    name: {{ .Values.postgres_db.cluster_name }}
+    name: {{ .Values.cluster_name }}

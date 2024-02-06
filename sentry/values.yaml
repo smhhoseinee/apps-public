@@ -1,4 +1,4 @@
-postgres_db:
+pg_db:
   instances: 3
   superuser_secret: superuser-secret
   db_user_secret: &db_user_secret sentry-skymng-db-user-secret
