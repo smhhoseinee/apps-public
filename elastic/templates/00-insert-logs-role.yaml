@@ -4,7 +4,7 @@ metadata:
   name: insert-logs
 stringData:
   roles.yml: |-
-    click_admins:
+    insert-logs:
       run_as: [ '*' ]
       indices:
       - names: [ 'skyromm-*', 'ds-skyroom-*' ]
