@@ -23,6 +23,31 @@ pg_db:
     secretAccessKey: SECRET_KEY
 
 sentry:
+  clickhouse:
+    clickhouse:
+      image: repo.rovzane.com/dockerhub/yandex/clickhouse-server
+    tabix:
+      image: repo.rovzane.com/dockerhub/spoonest/clickhouse-tabix-web-client
+  zookeeper:
+    image:
+      registry: repo.rovzane.com/dockerhub
+      repository: bitnami/zookeeper
+  rabbitmq:
+    image:
+      registry: repo.rovzane.com/dockerhub
+      repository: bitnami/rabbitmq
+  kafka:
+    image:
+      registry: repo.rovzane.com/dockerhub
+      repository: bitnami/kafka
+  redis:
+    image:
+      registry: repo.rovzane.com/dockerhub
+      repository: bitnami/redis
+  memcached:
+    image:
+      registry: repo.rovzane.com/dockerhub
+      repository: bitnami/memcached
   user:
     create: true
     email: m.barazandeh110@gmail.com
@@ -51,14 +76,12 @@ sentry:
     externalPort: 80
     annotations: {}
   postgresql:
-    enabled: true
-  # postgresql:
-  #   enabled: false
-  # externalPostgresql:
-  #   host: sentry-rw
-  #   port: 5432
-  #   username: *db_user_name
-  #   existingSecret: *db_user_secret
-  #   database: *db_name
-  # nginx:
-  #   enabled: false
+    enabled: false
+  externalPostgresql:
+    host: sentry-rw
+    port: 5432
+    username: *db_user_name
+    existingSecret: *db_user_secret
+    database: *db_name
+  nginx:
+    enabled: false
