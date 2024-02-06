@@ -7,5 +7,5 @@ stringData:
     insert-logs:
       run_as: [ '*' ]
       indices:
-      - names: [ 'skyromm-*', 'ds-skyroom-*' ]
+      - names: [ 'skyroom-*', 'ds-skyroom-*' ]
         privileges: [ 'create_doc', 'create_index', 'create', 'write', 'index' ]
