@@ -1,7 +1,7 @@
 postgres_db:
   instances: 3
-  superuser_secret: superuser-secret2
-  db_user_secret: sentry-skymng-db-user-secret
+  superuser_secret: superuser-secret
+  db_user_secret: &db_user_secret sentry-skymng-db-user-secret
   db_user_name: &db_user_name sentry-skymng
   db_name: &db_name sentry-db
   cluster_name: sentry
@@ -56,7 +56,7 @@ sentry:
     host: sentry-rw
     port: 5432
     username: *db_user_name
-    password: QIWmLIa36NdGIiBaN8u1
+    existingSecret: *db_user_secret
     database: *db_name
   # nginx:
   #   enabled: false
