@@ -30,12 +30,12 @@ sentry:
       image: repo.rovzane.com/dockerhub/spoonest/clickhouse-tabix-web-client
   zookeeper:
     image:
-      registry: repo.rovzane.com/dockerhub
-      repository: bitnami/zookeeper
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/zookeeper
   rabbitmq:
     image:
-      registry: repo.rovzane.com/dockerhub
-      repository: bitnami/rabbitmq
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/rabbitmq
   kafka:
     # zookeeper:
     #   enabled: false
@@ -46,12 +46,12 @@ sentry:
       repository: dockerhub/bitnami/kafka
   redis:
     image:
-      registry: repo.rovzane.com/dockerhub
-      repository: bitnami/redis
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/redis
   memcached:
     image:
-      registry: repo.rovzane.com/dockerhub
-      repository: bitnami/memcached
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/memcached
   user:
     create: true
     email: m.barazandeh110@gmail.com
