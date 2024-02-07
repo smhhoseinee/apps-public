@@ -37,10 +37,10 @@ sentry:
       registry: repo.rovzane.com/dockerhub
       repository: bitnami/rabbitmq
   kafka:
-    zookeeper:
-      enabled: false
-    kraft:
-      enabled: true
+    # zookeeper:
+    #   enabled: false
+    # kraft:
+    #   enabled: true
     image:
       registry: repo.rovzane.com/dockerhub
       repository: bitnami/kafka
