@@ -42,8 +42,8 @@ sentry:
     # kraft:
     #   enabled: true
     image:
-      registry: repo.rovzane.com/dockerhub
-      repository: bitnami/kafka
+      # registry: repo.rovzane.com/dockerhub
+      repository: repo.rovzane.com/dockerhub/bitnami/kafka
   redis:
     image:
       registry: repo.rovzane.com/dockerhub
