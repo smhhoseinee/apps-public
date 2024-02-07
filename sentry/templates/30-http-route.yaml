@@ -17,5 +17,5 @@ spec:
         value: /
     backendRefs:
     - kind: Service
-      name: sentry-nginx
+      name: sentry-web
       port: {{ .Values.sentry.service.externalPort }}
