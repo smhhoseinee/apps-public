@@ -83,4 +83,8 @@ sentry:
     username: *db_user_name
     existingSecret: *db_user_secret
     database: *db_name
-
+  nginx:
+    enabled: false
+  system:
+    url: "http://sentry.rovzane.com"
+    public: false
