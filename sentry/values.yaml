@@ -76,6 +76,8 @@ sentry:
     hostname: sentry.rovzane.com
   sentry:
     singleOrganization: false
+    cron:
+      logLevel: WARNING
     worker:
       replicas: 3
   service:
