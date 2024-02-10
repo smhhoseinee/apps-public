@@ -8,4 +8,4 @@ stringData:
       run_as: [ '*' ]
       indices:
       - names: [ 'skyroom-*', 'ds-skyroom-*' ]
-        privileges: [ 'create_doc', 'create_index', 'create' ]
+        privileges: [ 'create_doc', 'create_index', 'create', 'auto_configure' ]
