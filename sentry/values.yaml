@@ -1,0 +1,100 @@
+pg_db:
+  instances: 3
+  superuser_secret: superuser-secret
+  db_user_secret: &db_user_secret sentry-skymng-db-user-secret
+  db_user_name: &db_user_name sentry-skymng
+  db_name: &db_name sentry-db
+  cluster_name: sentry
+
+  storage:
+    storage_class: local-ssd
+    storage_size: 40Gi
+    wal_storage_size: 4Gi
+
+  image:
+    imageName: repo.rovzane.com/ghcr/cloudnative-pg/postgresql
+    tag: 16.1
+
+  s3:
+    destinationPath: s3://skyroom-sentry/sentry-pg 
+    endpointURL: https://s3.ir-thr-at1.arvanstorage.ir
+    secretName:  sentry-pd-s3-backup
+    accessKeyId: ACCESS_KEY
+    secretAccessKey: SECRET_KEY
+
+sentry:
+  clickhouse:
+    clickhouse:
+      image: repo.rovzane.com/dockerhub/yandex/clickhouse-server
+    tabix:
+      image: repo.rovzane.com/dockerhub/spoonest/clickhouse-tabix-web-client
+  zookeeper:
+    image:
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/zookeeper
+  rabbitmq:
+    image:
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/rabbitmq
+  kafka:
+    zookeeper:
+      image:
+        registry: "repo.rovzane.com"
+        repository: dockerhub/bitnami/zookeeper
+    # zookeeper:
+    #   enabled: false
+    # kraft:
+    #   enabled: true
+    image:
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/kafka
+  redis:
+    image:
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/redis
+  memcached:
+    image:
+      registry: "repo.rovzane.com"
+      repository: dockerhub/bitnami/memcached
+  user:
+    create: true
+    email: m.barazandeh110@gmail.com
+    password: 89WPXq7u7vif
+  images:
+    snuba:
+      repository: repo.rovzane.com/dockerhub/getsentry/snuba
+    sentry:
+      repository: repo.rovzane.com/dockerhub/getsentry/sentry
+    relay:
+      repository: repo.rovzane.com/dockerhub/getsentry/relay
+  ingress:
+    enabled: false
+    regexPathStyle: nginx
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/use-regex: "true"
+    hostname: sentry.rovzane.com
+  sentry:
+    singleOrganization: false
+    cron:
+      logLevel: WARNING
+    worker:
+      replicas: 3
+  service:
+    name: sentry
+    type: ClusterIP
+    externalPort: 9000
+    annotations: {}
+  postgresql:
+    enabled: false
+  externalPostgresql:
+    host: sentry-rw
+    port: 5432
+    username: *db_user_name
+    existingSecret: *db_user_secret
+    database: *db_name
+  nginx:
+    enabled: false
+  system:
+    url: "http://sentry.rovzane.com"
+    public: false
