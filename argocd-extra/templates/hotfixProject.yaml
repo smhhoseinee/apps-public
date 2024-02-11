@@ -16,3 +16,6 @@ spec:
   sourceRepos:
   - ssh://git@git.rovzane.com:4141/back/room.git
   - https://git.rovzane.com/devops/deployment/skyroom-apps.git
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
