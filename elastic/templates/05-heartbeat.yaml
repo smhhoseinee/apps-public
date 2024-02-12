@@ -7,6 +7,8 @@ spec:
   version: {{ .Values.version }}
   elasticsearchRef:
     name: {{ .Values.clustername }}
+  kibanaRef:
+    name: kibana
   config:
     heartbeat.monitors:
     - type: http
