@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  labels:
+    Name: hotfix
+  name: hotfix
+  namespace: argocd
+spec:
+  description: Skyroom hotfix environment
+  destinations:
+  - name: kubernetes-admin@hotfix.k8s.rovzane.com
+    server: https://kubelb.hotfix.k8s.rovzane.com:6443
+    namespace: '*hotfix'
+  sourceRepos:
+  - ssh://git@git.rovzane.com:4141/back/room.git
+  - https://git.rovzane.com/devops/deployment/skyroom-apps.git
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
