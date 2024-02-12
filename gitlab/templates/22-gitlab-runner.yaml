@@ -1,0 +1,96 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
+  name: gitlab-runner
+  namespace: argocd
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: gitlab
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=orphan
+  project: manage
+  source:
+    repoURL: 'https://repo.rovzane.com/artifactory/gitlab-chart-cache/'
+    targetRevision: 0.61.0
+    chart: gitlab-runner
+    helm:
+      values: |-
+          image:
+            registry: repo.rovzane.com/gitlab-registry
+            image: gitlab-org/gitlab-runner
+          replicas: 5
+          gitlabUrl: https://{{ .Values.gitlab_runner.gitlab_url }}
+          runnerToken: glrt--------------------------------------------------
+          concurrent: 20
+          checkInterval: 0
+          rbac:
+            create: true
+            rules:
+              - resources:
+                  - configmaps
+                  - pods
+                  - pods/attach
+                  - secrets
+                  - services
+                verbs:
+                  - get
+                  - list
+                  - watch
+                  - create
+                  - patch
+                  - update
+                  - delete
+              - apiGroups:
+                  - ""
+                resources:
+                  - pods/exec
+                verbs:
+                  - create
+                  - patch
+                  - delete
+            clusterWideAccess: false
+            podSecurityPolicy:
+              enabled: false
+              resourceNames:
+                - gitlab-runner
+          runners:
+            config: |
+              [[runners]]
+                [runners.kubernetes]
+                  privileged = true
+                  namespace = "gitlab"
+                  image = "repo.rovzane.com/dockerhub/arielkv/dind-glibc:latest"
+                  helper_image = "repo.rovzane.com/gitlab-registry/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-436955cb"
+                [runners.cache]
+                  Type = "s3"
+                  Path = "runner"
+                  Shared = true
+                  [runners.cache.s3]
+                    ServerAddress = "s3.ir-thr-at1.arvanstorage.ir"
+                    BucketName = "skyroom-git"
+                    BucketLocation = "Simin"
+                    Insecure = false
+                    AuthenticationType = "access-key"
+            cache:
+              secretName: {{ .Values.gitlab_runner.cache_secret }}
+          securityContext:
+            allowPrivilegeEscalation: true
+            runAsNonRoot: false
+            privileged: true
+          podSecurityContext:
+            runAsUser: 0
+            fsGroup: 0
+          resources:
+            limits:
+              memory: 4Gi
+              cpu: 4
+            requests:
+              memory: 128Mi
+              cpu: 100m

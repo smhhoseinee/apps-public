@@ -1,0 +1,237 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  name: gitlab
+  namespace: argocd
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: gitlab
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=orphan
+  project: manage
+  source:
+    repoURL: 'https://repo.rovzane.com/artifactory/gitlab-chart-cache/'
+    targetRevision: 7.8.1
+    chart: gitlab
+    helm:
+      values: |-
+          certmanager:
+            install: false
+            rbac:
+              create: false
+          gitlab:
+            toolbox:
+              enabled: true
+              backups:
+                cron:
+                  enabled: true
+                  extraArgs: " --skip registry,artifacts"
+                  persistence:
+                    enabled: false
+                    accessMode: ReadWriteOnce
+                    size: {{ .Values.gitlab.gitlabStorageSize }}
+                    storageClass: {{ .Values.gitlab.gitlabStorageClass }}
+                  schedule: 0 */6 * * *
+                objectStorage:
+                  backend: s3
+                  config:
+                    key: connection
+                    secret: {{ .Values.gitlab.s3_storage }}
+              persistence:
+                enabled: true
+                accessMode: ReadWriteOnce
+                size: {{ .Values.gitlab.gitlabStorageSize }}
+                storageClass: {{ .Values.gitlab.gitlabStorageClass }}
+              replicas: 1
+            gitlab-shell:
+              enabled: true
+              rbac:
+                create: true
+              image:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-shell
+            # sidekiq:
+            #   enabled: true
+            #   create: true
+            #   rbac: null
+            gitlab-exporter:
+              enabled: false
+              rbac:
+                create: false
+              image:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-exporter
+            gitaly:
+              persistence:
+                enabled: true
+                storageClass: {{ .Values.gitlab.gitalyStorageClass }}
+                accessMode: ReadWriteOnce
+                size: {{ .Values.gitlab.gitalyStorageSize }}
+              image:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitaly
+            gitlab-registry:
+              enabled: true
+              rbac:
+                create: true
+              image:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-container-registry
+          gitlab-runner:
+            install: false
+            gitlabUrl: {{ .Values.gitlab.gitlab_url }}
+            rbac:
+              create: true
+              rules:
+                - resources:
+                    - configmaps
+                    - pods
+                    - pods/attach
+                    - secrets
+                    - services
+                  verbs:
+                    - get
+                    - list
+                    - watch
+                    - create
+                    - patch
+                    - update
+                    - delete
+                - apiGroups:
+                    - ""
+                  resources:
+                    - pods/exec
+                  verbs:
+                    - create
+                    - patch
+                    - delete
+            runners:
+              image: repo.rovzane.com/dockerhub/ubuntu:22.04
+              namespace: gitlab
+              privileged: true
+              concurrent: 20
+              locked: false
+              config: |
+                [[runners]]
+                  [runners.kubernetes]
+                  image = "repo.rovzane.com/dockerhub/ubuntu:22.04"
+                  [runners.cache]
+                    Type = "s3"
+                    Path = "runner"
+                    Shared = true
+                    [runners.cache.s3]
+                      ServerAddress = "s3.ir-thr-at1.arvanstorage.ir"
+                      BucketName = "skyroom-git"
+                      BucketLocation = "Simin"
+                      Insecure = false
+                      AuthenticationType = "access-key"
+              cache:
+                secretName: {{ .Values.gitlab.gitlab_runner_cache_secret }}
+          global:
+            appConfig:
+              artifacts:
+                bucket: {{ .Values.gitlab.artifact_bucket}}
+                connection:
+                  key: connection
+                  secret: {{ .Values.gitlab.artifact_s3_storage }}
+                enabled: true
+              defaultCanCreateGroup: true
+              # incomingEmail:
+              #   enabled: false
+              #   deliveryMethod: sidekiq
+              lfs:
+                enabled: false
+              omniauth:
+                enabled: {{ .Values.gitlab.sso.enabled }}
+                autoLinkSamlUser: true
+                blockAutoCreatedUsers: false
+                providers:
+                  - secret: {{ .Values.gitlab.sso.secret_name }}
+              packages:
+                enabled: false
+              # serviceDeskEmail:
+              #   enabled: false
+              #   deliveryMethod: sidekiq
+              # sidekiq:
+              #   enabled: false
+              uploads:
+                enabled: true
+                bucket: gitlab-uploads
+                connection:
+                  key: connection
+                  secret: {{ .Values.gitlab.artifact_s3_storage }}
+                proxy_download: true
+            busybox:
+              image:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/cloud-native/mirror/images/busybox
+                tag: latest
+            certificates:
+              image:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/certificates
+            communityImages:
+              migrations:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-toolbox-ce
+              sidekiq:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-sidekiq-ce
+              toolbox:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-toolbox-ce
+              webservice:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-webservice-ce
+              workhorse:
+                repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-workhorse-ce
+            edition: ce
+            gitlabVersion: {{ .Values.gitlab.gitlab_version }}
+            grafana:
+              enabled: false
+            hosts:
+              domain: {{ .Values.gitlab.gitlab_url }}
+              externalIP: ""
+              gitlab:
+                name: {{ .Values.gitlab.gitlab_url }}
+                https: false
+              hostSuffix: null
+              https: false
+            ingress:
+              enabled: false
+              install: false
+              configureCertmanager: false
+            initialRootPassword:
+              secret: {{ .Values.gitlab.root_password }}
+              key: password
+            kas:
+              enabled: false
+            minio:
+              enabled: false
+            psql:
+              database: {{ .Values.gitlab.pg_db_name }}
+              host: {{ .Values.gitlab.db_cluster_name }}-rw
+              password:
+                useSecret: true
+                secret: {{ .Values.gitlab.pg_user_secret }}
+                key: password
+              username: {{ .Values.gitlab.pg_username }}
+            redis:
+              password:
+                enabled: true
+            registry:
+              install: false
+            serviceAccount:
+              enabled: true
+          nginx-ingress:
+            install: false
+            enabled: false
+          postgresql:
+            install: false
+          prometheus:
+            install: false
+          redis:
+            install: true
+            global:
+              storageClass: {{ .Values.gitlab.redisStorageClass }}
+          registry:
+            enabled: false
+          upgradeCheck:
+            enabled: false
