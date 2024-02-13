@@ -16,38 +16,288 @@ postgres_db:
     storage_size: 40Gi
     wal_storage_size: 4Gi
 
-gitlab_runner:
-  chart_version: 0.61.0
-  cache_secret: &gitlab_runner_cache_secret gitlab-runner-cache-secret
-  gitlab_url: *gitlab_url
-
-gitlab:
-  chart_version: 7.8.1
-  gitlab_version: 16.7.4
-  db_cluster_name: *db_cluster_name
-  pg_db_name: *db_name
-  pg_user_secret: *db_user_secret
-  pg_username: *db_username
-  gitlab_runner_cache_secret: *gitlab_runner_cache_secret
-  root_password: &gitlab_root_password gitlab-root-password
-  s3_storage: &gitlab_s3_storage backup-s3
-  artifact_s3_storage: &gitlab_artifact_s3_storage gitlab-artifacts-s3
-  sso:
-    enabled: true
-    secret_name: &gitlab_sso gitlab-sso
-  gitlab_url: *gitlab_url
-  gitlabStorageClass: local-ssdraid
-  gitlabStorageSize: 40Gi
-  gitalyStorageClass: local-ssdraid
-  gitalyStorageSize: 40Gi
-  redisStorageClass: local-ssd
-  artifact_bucket: gitlab-artifacts
-
 secrets:
   gitlab:
-    root_password: *gitlab_root_password
-    s3_storage: *gitlab_s3_storage
-    artifact_s3_storage: *gitlab_artifact_s3_storage
-    sso: *gitlab_sso
+    root_password: &gitlab_root_password gitlab-root-password
+    s3_storage: &gitlab_s3_storage backup-s3
+    artifact_s3_storage: &gitlab_artifact_s3_storage gitlab-artifacts-s3
+    sso: &gitlab_sso gitlab-sso
   gitlab_runner:
-    cache_secret: *gitlab_runner_cache_secret
+    cache_secret: &gitlab_runner_cache_secret gitlab-runner-cache-secret
+
+gitlab-runner:
+  image:
+    registry: repo.rovzane.com/gitlab-registry
+    image: gitlab-org/gitlab-runner
+  replicas: 5
+  gitlabUrl: https://git2.rovzane.com
+  runnerToken: glrt--------------------------------------------------
+  concurrent: 20
+  checkInterval: 0
+  rbac:
+    create: true
+    rules:
+      - resources:
+          - configmaps
+          - pods
+          - pods/attach
+          - secrets
+          - services
+        verbs:
+          - get
+          - list
+          - watch
+          - create
+          - patch
+          - update
+          - delete
+      - apiGroups:
+          - ""
+        resources:
+          - pods/exec
+        verbs:
+          - create
+          - patch
+          - delete
+    clusterWideAccess: false
+    podSecurityPolicy:
+      enabled: false
+      resourceNames:
+        - gitlab-runner
+  runners:
+    config: >
+      [[runners]]
+        [runners.kubernetes]
+          privileged = true
+          namespace = "gitlab"
+          image = "repo.rovzane.com/dockerhub/arielkv/dind-glibc:latest"
+          helper_image = "repo.rovzane.com/gitlab-registry/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-436955cb"
+        [runners.cache]
+          Type = "s3"
+          Path = "runner"
+          Shared = true
+          [runners.cache.s3]
+            ServerAddress = "s3.ir-thr-at1.arvanstorage.ir"
+            BucketName = "skyroom-git"
+            BucketLocation = "Simin"
+            Insecure = false
+            AuthenticationType = "access-key"
+    cache:
+      secretName: *gitlab_runner_cache_secret
+  securityContext:
+    allowPrivilegeEscalation: true
+    runAsNonRoot: false
+    privileged: true
+  podSecurityContext:
+    runAsUser: 0
+    fsGroup: 0
+  resources:
+    limits:
+      memory: 4Gi
+      cpu: 4
+    requests:
+      memory: 128Mi
+      cpu: 100m
+
+gitlab:
+  certmanager:
+    install: false
+    rbac:
+      create: false
+  gitlab:
+    toolbox:
+      enabled: true
+      backups:
+        cron:
+          enabled: true
+          extraArgs: " --skip registry,artifacts"
+          persistence:
+            enabled: false
+            accessMode: ReadWriteOnce
+            size: 40Gi
+            storageClass: local-ssdraid
+          schedule: 0 */6 * * *
+        objectStorage:
+          backend: s3
+          config:
+            key: connection
+            secret: *gitlab_s3_storage
+      persistence:
+        enabled: true
+        accessMode: ReadWriteOnce
+        size: 40Gi
+        storageClass: local-ssdraid
+      replicas: 1
+    gitlab-shell:
+      enabled: true
+      rbac:
+        create: true
+      image:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-shell
+    gitlab-exporter:
+      enabled: false
+      rbac:
+        create: false
+      image:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-exporter
+    gitaly:
+      persistence:
+        enabled: true
+        storageClass: local-ssdraid
+        accessMode: ReadWriteOnce
+        size: 40Gi
+      image:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitaly
+    gitlab-registry:
+      enabled: true
+      rbac:
+        create: true
+      image:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-container-registry
+  gitlab-runner:
+    install: false
+    gitlabUrl: *gitlab_url
+    rbac:
+      create: true
+      rules:
+        - resources:
+            - configmaps
+            - pods
+            - pods/attach
+            - secrets
+            - services
+          verbs:
+            - get
+            - list
+            - watch
+            - create
+            - patch
+            - update
+            - delete
+        - apiGroups:
+            - ""
+          resources:
+            - pods/exec
+          verbs:
+            - create
+            - patch
+            - delete
+    runners:
+      image: repo.rovzane.com/dockerhub/ubuntu:22.04
+      namespace: gitlab
+      privileged: true
+      concurrent: 20
+      locked: false
+      config: |
+        [[runners]]
+          [runners.kubernetes]
+          image = "repo.rovzane.com/dockerhub/ubuntu:22.04"
+          [runners.cache]
+            Type = "s3"
+            Path = "runner"
+            Shared = true
+            [runners.cache.s3]
+              ServerAddress = "s3.ir-thr-at1.arvanstorage.ir"
+              BucketName = "skyroom-git"
+              BucketLocation = "Simin"
+              Insecure = false
+              AuthenticationType = "access-key"
+      cache:
+        secretName: *gitlab_runner_cache_secret
+  global:
+    appConfig:
+      artifacts:
+        bucket: gitlab-artifacts
+        connection:
+          key: connection
+          secret: *gitlab_artifact_s3_storage
+        enabled: true
+      defaultCanCreateGroup: true
+      lfs:
+        enabled: false
+      omniauth:
+        enabled: true
+        autoLinkSamlUser: true
+        blockAutoCreatedUsers: false
+        providers:
+          - secret: *gitlab_sso
+      packages:
+        enabled: false
+      uploads:
+        enabled: true
+        bucket: gitlab-uploads
+        connection:
+          key: connection
+          secret: *gitlab_artifact_s3_storage
+        proxy_download: true
+    busybox:
+      image:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/cloud-native/mirror/images/busybox
+        tag: latest
+    certificates:
+      image:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/certificates
+    communityImages:
+      migrations:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-toolbox-ce
+      sidekiq:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-sidekiq-ce
+      toolbox:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-toolbox-ce
+      webservice:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-webservice-ce
+      workhorse:
+        repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-workhorse-ce
+    edition: ce
+    gitlabVersion: 16.7.4
+    grafana:
+      enabled: false
+    hosts:
+      domain: *gitlab_url
+      externalIP: ""
+      gitlab:
+        name: *gitlab_url
+        https: false
+      hostSuffix: null
+      https: false
+    ingress:
+      enabled: false
+      install: false
+      configureCertmanager: false
+    initialRootPassword:
+      secret: *gitlab_root_password
+      key: password
+    kas:
+      enabled: false
+    minio:
+      enabled: false
+    psql:
+      database: *db_name
+      host: gitlab-rw 
+      password:
+        useSecret: true
+        secret: *db_user_secret
+        key: password
+      username: *db_username
+    redis:
+      auth:
+        enabled: true
+    registry:
+      install: false
+    serviceAccount:
+      enabled: true
+  nginx-ingress:
+    install: false
+    enabled: false
+  postgresql:
+    install: false
+  prometheus:
+    install: false
+  redis:
+    install: true
+    global:
+      storageClass: local-ssd
+  registry:
+    enabled: false
+  upgradeCheck:
+    enabled: false

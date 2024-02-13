@@ -1,5 +1,5 @@
 apiVersion: v2
-name: gitlab-instance-test
+name: gitlab
 description: A Helm chart for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
@@ -23,7 +23,13 @@ version: 0.1.0
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
 dependencies:
-  - name: postgres_db
-    version: '*.*.*'
   - name: secrets
     version: '*.*.*'
+  - name: postgres_db
+    version: '*.*.*'
+  - name: gitlab
+    repository: https://repo.rovzane.com/artifactory/gitlab-chart-cache/
+    version: 7.8.1
+  - name: gitlab-runner
+    repository: https://repo.rovzane.com/artifactory/gitlab-chart-cache/
+    version: 0.61.0
