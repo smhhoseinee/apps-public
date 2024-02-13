@@ -31,7 +31,7 @@ gitlab-runner:
     image: gitlab-org/gitlab-runner
   replicas: 5
   gitlabUrl: https://git2.rovzane.com
-  runnerToken: glrt--------------------------------------------------
+  runnerToken: glrt-EgsCd83gYvpPCDmriSJ8
   concurrent: 20
   checkInterval: 0
   rbac:
