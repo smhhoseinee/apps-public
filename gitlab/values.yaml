@@ -30,7 +30,7 @@ gitlab-runner:
     registry: repo.rovzane.com/gitlab-registry
     image: gitlab-org/gitlab-runner
   replicas: 5
-  gitlabUrl: https://git2.rovzane.com
+  gitlabUrl: gitlab-webservice-default
   runnerToken: glrt-EgsCd83gYvpPCDmriSJ8
   concurrent: 20
   checkInterval: 0
