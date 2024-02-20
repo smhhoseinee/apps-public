@@ -1,69 +1,58 @@
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
 metadata:
-  name: {{ .Values.cluster_name }}
+  name: sentry-db
 spec:
-  instances: {{ .Values.instances }}
-  imageName: "{{ .Values.image.imageName }}:{{ .Values.image.tag }}"
-  startDelay: 150
-  stopDelay: 150
-  smartShutdownTimeout: 75
-  primaryUpdateStrategy: unsupervised
-  superuserSecret:
-    name: {{ .Values.superuser_secret }}
-  postgresql:
-    parameters:
-      shared_buffers: 256MB
-      pg_stat_statements.max: '10000'
-      pg_stat_statements.track: all
-      auto_explain.log_min_duration: '10s'
-    pg_hba:
-      - "host all all 0.0.0.0/0 trust" # this line enabled logical replication with programmatic access
-      - "host all postgres 0.0.0.0/0 md5"
-  bootstrap:
-    initdb:
-      database: {{ .Values.db_name }}
-      owner: {{ .Values.db_user_name }}
-      secret:
-        name: {{ .Values.db_user_secret }}
-  resources:
-    requests:
-      memory: "1Gi"
-      cpu: '1'
-    limits:
-      memory: "2Gi"
-      cpu: '2'
-  logLevel: warning
-  storage:
-    storageClass: {{ .Values.storage.storage_class }}
-    size: {{ .Values.storage.storage_size }}
-  walStorage:
-    storageClass: {{ .Values.storage.storage_class }}
-    size: {{ .Values.storage.wal_storage_size }}
-  monitoring:
-    enablePodMonitor: true
-  backup:
-    barmanObjectStore:
-      wal:
-        compression: gzip
-        maxParallel: 8
-      data:
-        compression: gzip
-        jobs: 2
-      tags:
-        backupRetentionPolicy: "expire"
-      historyTags:
-        backupRetentionPolicy: "keep"
-      destinationPath: {{ .Values.s3.destinationPath }}
-      endpointURL: {{ .Values.s3.endpointURL }}
-      s3Credentials:
-        accessKeyId:
-          name: {{ .Values.s3.secretName }}
-          key: {{ .Values.s3.accessKeyId }}
-        secretAccessKey:
-          name: {{ .Values.s3.secretName }}
-          key: {{ .Values.s3.secretAccessKey }}
-    retentionPolicy: "10d"
-  nodeMaintenanceWindow:
-    inProgress: false
-    reusePVC: true
+  users:
+    - name: sentry-skymng
+      databases:
+        - sentry
+      options: "SUPERUSER"
+  image: "{{ .Values.image.imageName }}:{{ .Values.image.tag }}"
+  postgresVersion: {{ .Values.postgres_version }}
+  instances:
+    - name: sentry-db
+      replicas: {{ .Values.replicas }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              topologyKey: kubernetes.io/hostname
+              labelSelector:
+                matchLabels:
+                  postgres-operator.crunchydata.com/cluster: sentry-db
+                  postgres-operator.crunchydata.com/instance-set: sentry-db
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: {{ .Values.storage.storage_size }}
+        storageClassName: {{ .Values.storage.storage_class }}
+  patroni:
+    dynamicConfiguration:
+      postgresql:
+        pg_hba:
+          - "host all all 0.0.0.0/0 trust" # this line enabled logical replication with programmatic access
+          - "host all postgres 0.0.0.0/0 md5"
+  backups:
+    pgbackrest:
+      image: 
+      configuration:
+      - secret:
+          name: pgo-s3-creds
+      global:
+        repo1-retention-full: "7"
+        repo1-retention-full-type: time
+        repo1-s3-uri-style: path
+        repo1-path: /sentry-backup
+      repos:
+      - name: repo1
+        schedules:
+          full: "0 1 * * 0"
+          differential: "0 1 * * 1-6"
+        s3:
+          bucket: {{ .Values.backups.s3.bucket }}
+          endpoint: {{ .Values.backups.s3.endpoint }}
+          region: {{ .Values.backups.s3.region }}

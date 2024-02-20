@@ -1,26 +1,22 @@
 pg_db:
-  instances: 3
-  superuser_secret: superuser-secret
-  db_user_secret: &db_user_secret sentry-skymng-db-user-secret
-  db_user_name: &db_user_name sentry-skymng
-  db_name: &db_name sentry-db
-  cluster_name: sentry
+  replicas: 3
 
   storage:
     storage_class: local-ssd
     storage_size: 40Gi
-    wal_storage_size: 4Gi
 
+  postgres_version: 15
   image:
-    imageName: repo.rovzane.com/ghcr/cloudnative-pg/postgresql
-    tag: 16.1
+    imageName: repo.rovzane.com/crunchydata/crunchydata/crunchy-postgres
+    tag: ubi8-15.3-2
 
-  s3:
-    destinationPath: s3://skyroom-sentry/sentry-pg 
-    endpointURL: https://s3.ir-thr-at1.arvanstorage.ir
-    secretName:  sentry-pd-s3-backup
-    accessKeyId: ACCESS_KEY
-    secretAccessKey: SECRET_KEY
+  backups:
+    image: repo.rovzane.com/crunchydata/crunchydata/crunchy-pgbackrest
+    tag: ubi8-2.45-2
+    s3:
+      bucket: "sentry-backup"
+      region: "simin"
+      endpoint: https://s3.ir-thr-at1.arvanstorage.ir
 
 sentry:
   clickhouse:
@@ -41,10 +37,6 @@ sentry:
       image:
         registry: "repo.rovzane.com"
         repository: dockerhub/bitnami/zookeeper
-    # zookeeper:
-    #   enabled: false
-    # kraft:
-    #   enabled: true
     image:
       registry: "repo.rovzane.com"
       repository: dockerhub/bitnami/kafka
@@ -70,9 +62,6 @@ sentry:
   ingress:
     enabled: false
     regexPathStyle: nginx
-    annotations:
-      kubernetes.io/ingress.class: nginx
-      nginx.ingress.kubernetes.io/use-regex: "true"
     hostname: sentry.rovzane.com
   sentry:
     singleOrganization: false
@@ -83,18 +72,17 @@ sentry:
   service:
     name: sentry
     type: ClusterIP
-    externalPort: 9000
     annotations: {}
   postgresql:
     enabled: false
   externalPostgresql:
-    host: sentry-rw
+    host: sentry-db-primary
     port: 5432
-    username: *db_user_name
-    existingSecret: *db_user_secret
-    database: *db_name
-  nginx:
-    enabled: false
+    username: sentry-skymng
+    password: E7[izYfWwZ@o-G;3JM:0J3fm
+    database: sentry
+  # nginx:
+  #   enabled: false
   system:
     url: "http://sentry.rovzane.com"
     public: false

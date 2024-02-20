@@ -1,5 +1,5 @@
 apiVersion: v2
-name: postgres_db
+name: sentry
 description: A Helm chart for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
@@ -28,4 +28,4 @@ dependencies:
     version: '*.*.*'
   - name: sentry
     repository: "https://repo.rovzane.com/artifactory/sentry"
-    version: 17.7.0
+    version: 21.5.0
