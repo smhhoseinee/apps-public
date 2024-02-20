@@ -9,3 +9,10 @@ spec:
     name: {{ .Values.clustername }}
   kibanaRef:
     name: kibana
+  http:
+    service:
+      spec:
+        type: ClusterIP
+    tls:
+      selfSignedCertificate:
+        disabled: true
