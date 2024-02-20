@@ -16,7 +16,15 @@ spec:
     - path:
         type: PathPrefix
         value: /
-      method: GET, POST, OPTIONS
+      method: GET
+    - path:
+        type: PathPrefix
+        value: /
+      method: POST
+    - path:
+        type: PathPrefix
+        value: /
+      method: OPTIONS
     filters:
     - type: ResponseHeaderModifier
       responseHeaderModifier:
