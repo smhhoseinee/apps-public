@@ -17,36 +17,14 @@ spec:
         type: PathPrefix
         value: /
       method: GET
-    filters:
-    - type: ResponseHeaderModifier
-      responseHeaderModifier:
-        add:
-          - name: "Access-Control-Allow-Origin"
-            value: "*"
-    backendRefs:
-    - kind: Service
-      name: apmserver-apm-http
-      port: 8200
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /
-      method: POST
-    filters:
-    - type: ResponseHeaderModifier
-      responseHeaderModifier:
-        add:
-          - name: "Access-Control-Allow-Origin"
-            value: "*"
-    backendRefs:
-    - kind: Service
-      name: apmserver-apm-http
-      port: 8200
-  - matches:
     - path:
         type: PathPrefix
         value: /
       method: OPTIONS
+    - path:
+        type: PathPrefix
+        value: /
+      method: POST
     filters:
     - type: ResponseHeaderModifier
       responseHeaderModifier:
