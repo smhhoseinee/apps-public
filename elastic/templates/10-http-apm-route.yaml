@@ -16,6 +16,12 @@ spec:
     - path:
         type: PathPrefix
         value: /
+    filters:
+    - type: RequestHeaderModifier
+      requestHeaderModifier:
+        add:
+          - name: "Access-Control-Allow-Origin"
+            value: "*"
     backendRefs:
     - kind: Service
       name: apmserver-apm-http
