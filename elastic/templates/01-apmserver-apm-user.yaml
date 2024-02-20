@@ -1,0 +1,16 @@
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: apmserver-apm-user
+  namespace: elastic
+spec:
+  encryptedData:
+    elastic-apmserver-apm-user: AgCW77zR/H3KR+hdEr+K18F5IupZfrhkbNeerIs578vaT7l6+Yq1/1JbJY/NE9IweYEsYiULIv0o+SeaRk569ilvAGcE+ciQy4taX+X/asy9DE3BHqWBqHYgy+z9Iw6jwTYZqjwDhcHqsG9BdQu5uaWs/KZVVnSt81sRhYBW0K+Ep8pA5Saye/Fx2PoY6k5TR/oC8LJzPIp9+X7d3O4hafMJ+MDGEhEIfvm5k2dqZ0clrPvNuc1rdWOenBx2UZcYDYJ/XhWUdBTS86AYSZp6e5KF62WDKMmkzampxnB4Tcpt76D59vGA7h5xUK8N09SGeIsoaHM1pmbYBnXGss4yxMfgRERcVgYOBDd0dJUpOp6P9Ka7H6fCCJkBjFRihndJBhIy9F8LghfDjmoPCfGcRPzpekaGrUyvk2mcygbL7RmQEJm+wFdBpAfAmBSa9sfwZm3jfVbFZA2dMNL7ujkq5ruYHwAtE0fkpfFTmZr5bAddr/SydoQqQgOsWUcT6nfFtaIWDYzzJSGqhwa2PPeOmrfSwFm3sK03iyVP2g/d/D6eub2YWbwkTFt1Oqa16k/6bKjc90UIvnp1SMFNw36tnLnLGNb5ITjr+obpLyknumtxv9+rD/44Bxr99CjEfQkaw4b7mONpKja6Rhu2ivAc2EcQqAVUJPPMLU2I2AW9HZCPMsBfz8lzL2pmGHIvvrDfkKACiZxBSpQ0OwERgAut52LGNbbYcMlK3WU=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: apmserver-apm-user
+      namespace: elastic
+    type: Opaque
