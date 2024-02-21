@@ -86,3 +86,7 @@ sentry:
   system:
     url: "http://sentry.rovzane.com"
     public: false
+  hooks:
+    enabled: true
+    removeOnSuccess: true
+    activeDeadlineSeconds: 1000
