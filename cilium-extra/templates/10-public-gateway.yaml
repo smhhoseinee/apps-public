@@ -1,0 +1,30 @@
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: public-gateway
+  namespace: infra
+spec:
+  gatewayClassName: public
+  infrastructure:
+    annotations:
+      "io.cilium/lb-ipam-ips": "172.16.133.138"
+      metallb.universe.tf/loadBalancerIPs: "172.16.133.138"
+  addresses:
+  - type: IPAddress
+    value: 172.16.133.128
+  listeners:
+  - name: public-rovzane-https
+    protocol: HTTPS
+    port: 443
+    allowedRoutes:
+      namespaces:
+        from: Selector
+        selector:
+          matchLabels:
+            public-gateway-access: "true"
+    hostname: "*.rovzane.com"
+    tls:
+      certificateRefs:
+      - kind: Secret
+        name: tls-rovzane
