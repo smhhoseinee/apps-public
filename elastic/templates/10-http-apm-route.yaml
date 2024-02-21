@@ -6,7 +6,7 @@ metadata:
   namespace: elastic
 spec:
   parentRefs:
-  - name: private-gateway
+  - name: public-gateway
     namespace: infra
   hostnames:
   - "apm.rovzane.com"
