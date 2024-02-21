@@ -28,6 +28,8 @@ spec:
     filters:
     - type: ResponseHeaderModifier
       responseHeaderModifier:
+        remove:
+          - "Access-Control-Allow-Origin"
         add:
           - name: "Access-Control-Allow-Origin"
             value: "*"
