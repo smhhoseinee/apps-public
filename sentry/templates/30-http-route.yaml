@@ -6,7 +6,7 @@ metadata:
   namespace: sentry
 spec:
   parentRefs:
-  - name: private-gateway
+  - name: public-gateway
     namespace: infra
   hostnames:
   - "{{ .Values.sentry.ingress.hostname }}"
