@@ -16,3 +16,61 @@ spec:
     tls:
       selfSignedCertificate:
         disabled: true
+  config:
+    apm-server:
+      rum:
+        enabled: true
+        event_rate.limit: 300
+        event_rate.lru_size: 1000
+        allow_origins: ['*']
+      ilm:
+        enabled: "true"
+        setup:
+          mapping:
+            - event_type: "error"
+              policy_name: "apm-error-span-policy"
+            - event_type: "span"
+              policy_name: "apm-error-span-policy"
+            - event_type: "transaction"
+              policy_name: "apm-transaction-metric-policy"
+            - event_type: "metric"
+              policy_name: "apm-transaction-metric-policy"
+          policies:
+            - name: "apm-error-span-policy"
+              policy:
+                phases:
+                  hot:
+                    actions:
+                      rollover:
+                        max_age: "14d"
+                      set_priority:
+                        priority: 100
+                  warm:
+                    min_age: "15d"
+                    actions:
+                      set_priority:
+                        priority: 50
+                      readonly: {}
+                  delete:
+                    min_age: "180d"
+                    actions:
+                      delete: {}
+            - name: "apm-transaction-metric-policy"
+              policy:
+                phases:
+                  hot:
+                    actions:
+                      rollover:
+                        max_age: "14d"
+                      set_priority:
+                        priority: 100
+                  warm:
+                    min_age: "15d"
+                    actions:
+                      set_priority:
+                        priority: 50
+                      readonly: {}
+                  delete:
+                    min_age: "180d"
+                    actions:
+                      delete: {}
