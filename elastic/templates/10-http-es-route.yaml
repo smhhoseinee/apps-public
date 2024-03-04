@@ -10,6 +10,7 @@ spec:
     namespace: infra
   hostnames:
   - "elastic.rovzane.com"
+  - "elastic5.rovzane.com"
   rules:
   - matches:
     - path:
