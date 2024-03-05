@@ -92,4 +92,4 @@ sentry:
   hooks:
     enabled: true
     removeOnSuccess: true
-    activeDeadlineSeconds: 1000
+    activeDeadlineSeconds: 1500
