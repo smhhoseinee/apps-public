@@ -17,10 +17,6 @@ spec:
       selfSignedCertificate:
         disabled: true
   config:
-    output:
-      elasticsearch:
-        headers:
-          X-My-Header: mahdi
     apm-server:
       rum:
         enabled: true
