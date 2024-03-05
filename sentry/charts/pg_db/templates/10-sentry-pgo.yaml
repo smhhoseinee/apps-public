@@ -73,5 +73,5 @@ spec:
                 - ReadWriteOnce
               resources:
                 requests:
-                  storage: {{ .Values.storage.storage_size }}
-              storageClassName: {{ .Values.storage.storage_class }}
+                  storage: {{ .Values.backup.storage.storage_size }}
+              storageClassName: {{ .Values.backup.storage.storage_class }}

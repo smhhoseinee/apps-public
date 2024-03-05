@@ -16,3 +16,6 @@ backups:
     bucket: "sentry-backup"
     region: "simin"
     endpoint: https://s3.ir-thr-at1.arvanstorage.ir
+  storage:
+    storage_class: local-hdd
+    storage_size: 40Gi
