@@ -22,7 +22,7 @@ spec:
         enabled: true
         event_rate.limit: 300
         event_rate.lru_size: 1000
-        allow_origins: ['*']
+        # allow_origins: ['*']
       ilm:
         enabled: "true"
         setup:
