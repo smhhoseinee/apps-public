@@ -8,6 +8,8 @@ spec:
       databases:
         - sentry
       options: "SUPERUSER"
+      password:
+        type: AlphaNumeric
   image: "{{ .Values.image.imageName }}:{{ .Values.image.tag }}"
   postgresVersion: {{ .Values.postgres_version }}
   instances:
