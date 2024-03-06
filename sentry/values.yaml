@@ -82,7 +82,7 @@ sentry:
     host: sentry-db-primary
     port: 5432
     username: sentry-skymng
-    password: "?<:{2<|mp*msKL+MA1I(7}]7"
+    password: "E7[izYfWwZ@o-G;3JM:0J3fm"
     database: sentry
   # nginx:
   #   enabled: false
