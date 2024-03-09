@@ -1,25 +1,26 @@
 pg_db:
-  replicas: 3
+  instances: 3
+  superuser_secret: superuser-secret
+  db_user_secret: &db_user_secret sentry-skymng-db-user-secret
+  db_user_name: &db_user_name sentry-skymng
+  db_name: &db_name sentry-db
+  cluster_name: sentry
 
   storage:
     storage_class: local-ssd
     storage_size: 40Gi
+    wal_storage_size: 4Gi
 
-  postgres_version: 15
   image:
-    imageName: repo.rovzane.com/crunchydata/crunchydata/crunchy-postgres
-    tag: ubi8-15.3-2
+    imageName: repo.rovzane.com/ghcr/cloudnative-pg/postgresql
+    tag: 16.1
 
-  backups:
-    image: repo.rovzane.com/crunchydata/crunchydata/crunchy-pgbackrest
-    tag: ubi8-2.45-2
-    s3:
-      bucket: "sentry-backup"
-      region: "simin"
-      endpoint: https://s3.ir-thr-at1.arvanstorage.ir
-    storage:
-      storage_class: local-hdd
-      storage_size: 40Gi
+  s3:
+    destinationPath: s3://skyroom-sentry/sentry-pg 
+    endpointURL: https://s3.ir-thr-at1.arvanstorage.ir
+    secretName:  sentry-pd-s3-backup
+    accessKeyId: ACCESS_KEY
+    secretAccessKey: SECRET_KEY
 
 sentry:
   clickhouse:
@@ -79,11 +80,11 @@ sentry:
   postgresql:
     enabled: false
   externalPostgresql:
-    host: sentry-db-primary
+    host: sentry-rw
     port: 5432
-    username: sentry-skymng
-    password: LJEyUndXV241GMn2LJCo
-    database: sentry
+    username: *db_user_name
+    existingSecret: *db_user_secret
+    database: *db_name
   # nginx:
   #   enabled: false
   system:
