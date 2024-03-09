@@ -1,9 +1,8 @@
 apiVersion: v2
 name: pgo
-description: "PostgreSQL Operator for Kubernetes"
+description: Installer for PGO, the open source Postgres Operator from Crunchy Data
+
 type: application
-version: 0.1.0
-dependencies:
-- name: pgo
-  version: 5.x.x
-  repository: oci://registry.arico-b2b.com/neorcloud
+# The version below should match the version on the PostgresCluster CRD
+version: 5.5.1
+appVersion: 5.5.1
