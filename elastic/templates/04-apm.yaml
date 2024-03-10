@@ -18,11 +18,21 @@ spec:
         disabled: true
   config:
     apm-server:
+      auth:
+        anonymous:
+          enabled: true
+          allow_agent: [rum-js, js-base]
+          allow_service: ['*']
+      max_header_size: 485760
+      idle_timeout: 90s
+      read_timeout: 300s
+      write_timeout: 300s
+      max_event_size: 1457600
       rum:
         enabled: true
-        event_rate.limit: 300
-        event_rate.lru_size: 1000
-        # allow_origins: ['*']
+        # event_rate.limit: 300
+        # event_rate.lru_size: 1000
+        allow_origins: ['*']
       ilm:
         enabled: "true"
         setup:
