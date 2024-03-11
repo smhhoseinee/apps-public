@@ -56,6 +56,14 @@ sentry:
     create: true
     email: m.barazandeh110@gmail.com
     password: 89WPXq7u7vif
+  mail:
+    backend: smtp
+    useTls: false
+    username: "sentry"
+    password: "atgi7pRsBe6FBMApqMTF1TH8VXWMN2"
+    port: 25
+    host: "mail.skyroom.ir"
+    from: "sentry@skyroom.ir"
   images:
     snuba:
       repository: repo.rovzane.com/dockerhub/getsentry/snuba
