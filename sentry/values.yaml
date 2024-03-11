@@ -58,7 +58,8 @@ sentry:
     password: 89WPXq7u7vif
   mail:
     backend: smtp
-    useTls: false
+    useTls: true
+    useSsl: true
     username: "sentry@skyroom.ir"
     password: "atgi7pRsBe6FBMApqMTF1TH8VXWMN2"
     port: 25
