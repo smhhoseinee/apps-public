@@ -28,11 +28,12 @@ spec:
         name: {{ .Values.db_user_secret }}
   resources:
     requests:
-      memory: "1024Mi"
-      cpu: 1
+      memory: "1Gi"
+      cpu: '1'
     limits:
-      memory: "2048Mi"
-      cpu: 2
+      memory: "2Gi"
+      cpu: '2'
+  logLevel: warning
   storage:
     storageClass: {{ .Values.storage.storage_class }}
     size: {{ .Values.storage.storage_size }}
@@ -48,7 +49,6 @@ spec:
         maxParallel: 8
       data:
         compression: gzip
-        immediateCheckpoint: false
         jobs: 2
       tags:
         backupRetentionPolicy: "expire"
