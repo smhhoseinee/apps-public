@@ -1,7 +1,7 @@
 image:
   repository: repo.rovzane.com/dockerhub/velero/velero
 
-upgradeCRDs: true
+upgradeCRDs: false
 
 credentials:
   useSecret: true
@@ -22,7 +22,7 @@ configuration:
 snapshotsEnabled: false
 
 schedules:
-  #  clustertestbackuo:
+  #  clusterBackup:
   #    schedule: "0 */5 * * *"
   #    template:
   #      snapshotVolumes: false      
@@ -30,7 +30,7 @@ schedules:
   #      includedNamespaces:
   #       - '*'
 
-    gitlabbackuo:
+    gitlabBackup:
       schedule: "every 6h"
       template:
         snapshotVolumes: false      
