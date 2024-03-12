@@ -5,9 +5,9 @@ type: application
 version: 0.1.0
 dependencies:
   - name: keycloak
-    version: 18.x.x
-    repository: "oci://registry-1.docker.io/bitnamicharts"
-  - name: postgrescluster
-    version: 5.x.x
-    repository: oci://registry.arico-b2b.com/neorcloud
-    condition: postgrescluster.enabled
+    version: 19.x.x
+    repository: "https://repo.rovzane.com/artifactory/bitnami-charts/"
+  - name: postgresql
+    version: 14.x.x
+    repository: "https://repo.rovzane.com/artifactory/bitnami-charts/"
+    condition: postgresql.enabled
