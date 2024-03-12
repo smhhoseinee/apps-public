@@ -1,8 +1,47 @@
-spec:
-  destination:
-    server: https://kubernetes.default.svc
-    project: manage
-  source:
-    RepoUrl: 'https://vmware-tanzu.github.io/helm-charts/'
-    targetRevision: 5.2.0
-    chart: velero
+image:
+  repository: repo.rovzane.com/dockerhub/velero/velero
+
+upgradeCRDs: true
+
+credentials:
+  useSecret: true
+  existingSecret: velero-arvan-secret
+
+configuration:
+  backupStorageLocation:
+    - name: "default"
+      provider: aws
+      bucket: backup-tools
+      prefix: velero-tools
+      config:
+        region: simin
+        s3ForcePathStyle: true
+        publicUrl: https://s3.ir-thr-at1.arvanstorage.ir
+        s3Url: https://s3.ir-thr-at1.arvanstorage.ir
+
+snapshotsEnabled: false
+
+schedules:
+  #  clustertestbackuo:
+  #    schedule: "0 */5 * * *"
+  #    template:
+  #      snapshotVolumes: false      
+  #      ttl: "168h"
+  #      includedNamespaces:
+  #       - '*'
+
+    gitlabbackuo:
+      schedule: "every 6h"
+      template:
+        snapshotVolumes: false      
+        ttl: "168h"
+        includedNamespaces:
+        - 'gitlab'
+
+initContainers: 
+    - name: velero-plugin-for-aws
+      image: velero/velero-plugin-for-aws:v1.8.2
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: /target
+          name: plugins
