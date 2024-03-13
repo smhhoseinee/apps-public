@@ -63,7 +63,7 @@ gitlab-runner:
       enabled: false
       resourceNames:
         - gitlab-runner
-  # runners:
+  runners:
   #   config: |
   #     [[runners]]
   #       [runners.kubernetes]
@@ -81,8 +81,8 @@ gitlab-runner:
   #           BucketLocation = "Simin"
   #           Insecure = false
   #           AuthenticationType = "access-key"
-  #   cache:
-  #     secretName: *gitlab_runner_cache_secret
+    cache:
+      secretName: *gitlab_runner_cache_secret
   # securityContext:
   #   allowPrivilegeEscalation: true
   #   runAsNonRoot: false
