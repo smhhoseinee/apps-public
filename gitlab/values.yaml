@@ -32,7 +32,8 @@ gitlab-runner:
   replicas: 5
   privileged: true
   gitlabUrl: http://gitlab-webservice-default:8181
-  runnerToken: glrt-zFHfgixkfu3LWiszMX8_
+  # runnerToken: glrt-zFHfgixkfu3LWiszMX8_
+  runnerRegistrationToken: lkkU7olHRxHfb5evO8VUIH16fA1CDY7B6fKuAEigqUbn59XDXQMLLPcVEeVqPzNw
   concurrent: 20
   checkInterval: 0
   rbac:
