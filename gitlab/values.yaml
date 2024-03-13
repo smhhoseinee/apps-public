@@ -30,12 +30,9 @@ gitlab-runner:
     registry: repo.rovzane.com/gitlab-registry
     image: gitlab-org/gitlab-runner
   replicas: 5
-  # probeTimeoutSeconds: 70
-  # privileged: true
   gitlabUrl: http://gitlab-webservice-default:8181
   runnerToken: glrt-zFHfgixkfu3LWiszMX8_
-  # concurrent: 20
-  # checkInterval: 0
+  concurrent: 20
   rbac:
     create: true
     rules:
@@ -93,13 +90,13 @@ gitlab-runner:
   # podSecurityContext:
   #   runAsUser: 0
   #   fsGroup: 0
-  # resources:
-  #   limits:
-  #     memory: 4Gi
-  #     cpu: 4
-  #   requests:
-  #     memory: 128Mi
-  #     cpu: 100m
+  resources:
+    limits:
+      memory: 4Gi
+      cpu: 4
+    requests:
+      memory: 128Mi
+      cpu: 100m
 
 gitlab:
   certmanager:
@@ -158,80 +155,6 @@ gitlab:
         repository: repo.rovzane.com/gitlab-registry/gitlab-org/build/cng/gitlab-container-registry
   gitlab-runner:
     install: false
-    image:
-      registry: repo.rovzane.com/gitlab-registry
-      image: gitlab-org/gitlab-runner
-    replicas: 5
-    probeTimeoutSeconds: 70
-    privileged: true
-    runnerToken: glrt-zFHfgixkfu3LWiszMX8_
-    concurrent: 20
-    checkInterval: 0
-    gitlabUrl: http://gitlab-webservice-default:8181
-    rbac:
-      create: true
-      rules:
-        - resources:
-            - configmaps
-            - pods
-            - pods/attach
-            - secrets
-            - services
-          verbs:
-            - get
-            - list
-            - watch
-            - create
-            - patch
-            - update
-            - delete
-        - apiGroups:
-            - ""
-          resources:
-            - pods/exec
-          verbs:
-            - create
-            - patch
-            - delete
-      clusterWideAccess: false
-      podSecurityPolicy:
-        enabled: false
-        resourceNames:
-          - gitlab-runner
-    runners:
-      config: |
-        [[runners]]
-          [runners.kubernetes]
-            privileged = true
-            namespace = "gitlab"
-            image = "repo.rovzane.com/dockerhub/ubuntu:22.04"
-            helper_image = "repo.rovzane.com/gitlab-registry/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-436955cb"
-          [runners.cache]
-            Type = "s3"
-            Path = "runner"
-            Shared = true
-            [runners.cache.s3]
-              ServerAddress = "s3.ir-thr-at1.arvanstorage.ir"
-              BucketName = "skyroom-git"
-              BucketLocation = "Simin"
-              Insecure = false
-              AuthenticationType = "access-key"
-      cache:
-        secretName: *gitlab_runner_cache_secret
-    securityContext:
-      allowPrivilegeEscalation: true
-      runAsNonRoot: false
-      privileged: true
-    podSecurityContext:
-      runAsUser: 0
-      fsGroup: 0
-    resources:
-      limits:
-        memory: 4Gi
-        cpu: 4
-      requests:
-        memory: 128Mi
-        cpu: 100m
   global:
     appConfig:
       artifacts:
