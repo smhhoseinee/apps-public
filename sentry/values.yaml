@@ -57,7 +57,7 @@ sentry:
     email: m.barazandeh110@gmail.com
     password: 89WPXq7u7vif
   mail:
-    backend: dummy
+    backend: smtp
     useTls: true
     useSsl: false
     username: "sentry@skyroom.ir"
