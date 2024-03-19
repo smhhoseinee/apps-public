@@ -28,4 +28,4 @@ dependencies:
     version: '*.*.*'
   - name: sentry
     repository: "https://repo.rovzane.com/artifactory/sentry"
-    version: 21.5.0
+    version: 21.6.0

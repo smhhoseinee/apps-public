@@ -23,6 +23,7 @@ pg_db:
     secretAccessKey: SECRET_KEY
 
 sentry:
+  asHook: false
   clickhouse:
     clickhouse:
       image: repo.rovzane.com/dockerhub/yandex/clickhouse-server
