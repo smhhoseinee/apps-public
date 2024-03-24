@@ -19,7 +19,8 @@ spec:
       pg_stat_statements.track: all
       auto_explain.log_min_duration: '10s'
     pg_hba:
-      - host app app all password
+      - "host all all 0.0.0.0/0 trust" # this line enabled logical replication with programmatic access
+      - "host all postgres 0.0.0.0/0 md5"
   bootstrap:
     initdb:
       database: {{ .Values.db_name }}
@@ -49,6 +50,7 @@ spec:
         maxParallel: 8
       data:
         compression: gzip
+        immediateCheckpoint: false
         jobs: 2
       tags:
         backupRetentionPolicy: "expire"
