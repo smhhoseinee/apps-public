@@ -9,12 +9,24 @@ postgres_db:
   cluster_name: *db_cluster_name
   db_name: *db_name
   db_user_name: *db_username
-  pg_version: 16
   db_user_secret: *db_user_secret
+  instances: 3
+  superuser_secret: superuser-secret
   storage:
     storage_class: local-ssd
     storage_size: 40Gi
     wal_storage_size: 4Gi
+
+  image:
+    imageName: repo.rovzane.com/ghcr/cloudnative-pg/postgresql
+    tag: 16.1
+
+  s3:
+    destinationPath: s3://skyroom-git/gitlab-pg
+    endpointURL: https://s3.ir-thr-at1.arvanstorage.ir
+    secretName:  gitlab-pd-s3-backup
+    accessKeyId: ACCESS_KEY
+    secretAccessKey: SECRET_KEY
 
 secrets:
   gitlab:
