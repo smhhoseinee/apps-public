@@ -31,7 +31,7 @@ gitlab-runner:
     image: gitlab-org/gitlab-runner
   replicas: 5
   gitlabUrl: http://gitlab-webservice-default:8181
-  runnerToken: glrt-zFHfgixkfu3LWiszMX8_
+  runnerToken: glrt-8E8JScFMKX6eLtUMbo7X
   concurrent: 20
   rbac:
     create: true
