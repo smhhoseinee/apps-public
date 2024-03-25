@@ -4,7 +4,6 @@ metadata:
   name: kibana
 spec:
   version: {{ .Values.version }}
-  image: repo.rovzane.com/elastic/kibana/kibana:{{ .Values.version }}
   http:
     service:
       spec:
