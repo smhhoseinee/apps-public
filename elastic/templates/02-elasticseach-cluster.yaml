@@ -13,7 +13,7 @@ spec:
     - secretName: mohit-logs-user
     roles:
     - secretName: insert-logs
-  image: docker.elastic.co/elasticsearch/elasticsearch:{{ .Values.version }}
+  image: repo.rovzane.com/elastic/elasticsearch/elasticsearch:{{ .Values.version }}
   http:
     service:
       spec:

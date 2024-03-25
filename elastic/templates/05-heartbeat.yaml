@@ -28,7 +28,7 @@ spec:
       spec:
         containers:
           - name: heartbeat
-            image: docker.elastic.co/beats/heartbeat:{{ .Values.version }}
+            image: repo.rovzane.com/elastic/beats/heartbeat:{{ .Values.version }}
             securityContext:
               runAsUser: 0
               privileged: true
